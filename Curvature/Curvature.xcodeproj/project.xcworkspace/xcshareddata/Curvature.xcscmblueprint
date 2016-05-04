@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "31301F1633F41841CB34D0F93615B60215C6036E",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "915F6E5783A989E7E049979A6A014EA981E79FD7" : 0,
+    "31301F1633F41841CB34D0F93615B60215C6036E" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "1D002058-F86B-49DA-BCE1-AC8147B2689A",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "915F6E5783A989E7E049979A6A014EA981E79FD7" : "",
+    "31301F1633F41841CB34D0F93615B60215C6036E" : "Curvature\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Curvature",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Curvature\/Curvature.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/nikhiljay\/curvature.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "31301F1633F41841CB34D0F93615B60215C6036E"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/pugi777\/taekare.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "915F6E5783A989E7E049979A6A014EA981E79FD7"
+    }
+  ]
+}
