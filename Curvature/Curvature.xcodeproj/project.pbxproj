@@ -32,7 +32,6 @@
 		31DF4AFB1CD9C2A400553E68 /* StudyTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DF4AE31CD9C2A400553E68 /* StudyTasks.swift */; };
 		31DF4AFC1CD9C2A400553E68 /* WithdrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DF4AE41CD9C2A400553E68 /* WithdrawViewController.swift */; };
 		31DF4B061CD9C55600553E68 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31DF4B051CD9C55600553E68 /* HealthKit.framework */; };
-		31DF4B131CDB8E0D00553E68 /* ORKTiltStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DF4B121CDB8E0D00553E68 /* ORKTiltStep.swift */; };
 		6C63F813B9A13C4E7650D768 /* Pods_Curvature.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F99559C9462CB2752B6B4DBB /* Pods_Curvature.framework */; };
 /* End PBXBuildFile section */
 
@@ -65,7 +64,6 @@
 		31DF4AE41CD9C2A400553E68 /* WithdrawViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WithdrawViewController.swift; sourceTree = "<group>"; };
 		31DF4B051CD9C55600553E68 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		31DF4B071CD9C55600553E68 /* Curvature.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Curvature.entitlements; sourceTree = "<group>"; };
-		31DF4B121CDB8E0D00553E68 /* ORKTiltStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ORKTiltStep.swift; sourceTree = "<group>"; };
 		3FDE092E45BF62A917135C12 /* Pods-Curvature.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Curvature.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Curvature/Pods-Curvature.debug.xcconfig"; sourceTree = "<group>"; };
 		83D4548845039C05E5FB97AD /* Pods-Curvature.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Curvature.release.xcconfig"; path = "Pods/Target Support Files/Pods-Curvature/Pods-Curvature.release.xcconfig"; sourceTree = "<group>"; };
 		F99559C9462CB2752B6B4DBB /* Pods_Curvature.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Curvature.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -146,7 +144,6 @@
 		31DF4AFF1CD9C32200553E68 /* Activities */ = {
 			isa = PBXGroup;
 			children = (
-				31DF4B121CDB8E0D00553E68 /* ORKTiltStep.swift */,
 				31DF4ACD1CD9C2A400553E68 /* ActivityViewController.swift */,
 				31DF4AE31CD9C2A400553E68 /* StudyTasks.swift */,
 			);
@@ -357,7 +354,6 @@
 				31DF4AB21CD9BED100553E68 /* AppDelegate.swift in Sources */,
 				31DF4AF81CD9C2A400553E68 /* ProfileViewController.swift in Sources */,
 				31DF4AF61CD9C2A400553E68 /* ProfileHeaderView.swift in Sources */,
-				31DF4B131CDB8E0D00553E68 /* ORKTiltStep.swift in Sources */,
 				31DF4AFA1CD9C2A400553E68 /* ResearchContainerViewController.swift in Sources */,
 				31DF4AEE1CD9C2A400553E68 /* HealthDataStep.swift in Sources */,
 				31DF4AEC1CD9C2A400553E68 /* DiscreteGraphDataSource.swift in Sources */,

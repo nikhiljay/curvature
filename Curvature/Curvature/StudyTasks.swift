@@ -33,7 +33,7 @@ import CoreMotion
 
 struct StudyTasks {
     
-    private enum Identifier {
+    internal enum Identifier {
         // Task with a form, where multiple items appear on one page.
         case FormTask
         case FormStep
@@ -246,11 +246,9 @@ struct StudyTasks {
     }()
     
     static var pictureTask: ORKTask {
-        // Create the intro step.
         let instructionStep = ORKInstructionStep(identifier: String(Identifier.IntroStep))
-        
         instructionStep.title = NSLocalizedString("Take a Picture", comment: "")
-        instructionStep.text = "Someone else should take a picture of your back for determining angles of scoliosis."
+        instructionStep.text = "Take off your shirt so that your spine is visible. Stand straight, with your arms at your sides, feet touching together, and head facing forward. Ask someone to take a picture of your back to determine angles of scoliosis."
         
         let back = UIImage(named: "back")!
         instructionStep.image = back
@@ -259,14 +257,17 @@ struct StudyTasks {
         imageCaptureStep.optional = false
         imageCaptureStep.accessibilityInstructions = NSLocalizedString("Capture most of the back in the rectangle frame.", comment: "")
         imageCaptureStep.accessibilityHint = NSLocalizedString("Use the preview as guidance.", comment: "")
-        
         imageCaptureStep.templateImage = UIImage(named: "rectangle")!
-        
         imageCaptureStep.templateImageInsets = UIEdgeInsets(top: 0.1, left: 0.1, bottom: 0.1, right: 0.1)
+        
+        let completionStep = ORKCompletionStep(identifier: String(Identifier.CompletionStep))
+        completionStep.title = "Activity Complete"
+        completionStep.text = "Your data will be analyzed and you will be notified when your results are ready."
         
         return ORKOrderedTask(identifier: String(Identifier.ImageCaptureTask), steps: [
             instructionStep,
-            imageCaptureStep
+            imageCaptureStep,
+            completionStep
         ])
     }
     
@@ -281,13 +282,22 @@ struct StudyTasks {
         
         let tiltTutorial  = ORKInstructionStep(identifier: String(Identifier.TiltTutorial))
         tiltTutorial.title = "Bend"
-        tiltTutorial.text = "Take your shirt off. ADD STUFF HERE"
+        tiltTutorial.text = "Take off your shirt so that your spine is visible. Now, bend forward, starting at the waist until the back comes in the horizontal plane, with the feet together, arms hanging and the knees in extension. Ask someone to place the iPhone horizontally on the middle of your back so that the phone's sides are perpendicular to your spine."
         
-        let tiltStep = ORKTiltStep(identifier: String(Identifier.TiltTask))
+        let tiltStep = ORKTimedWalkStep(identifier: String(Identifier.TiltTask))
         tiltStep.title = "Bend"
-        tiltStep.stuff = "hi"
+        tiltStep.text = "Measuring rotational motion in progress..."
+        tiltStep.stepDuration = NSTimeInterval.abs(15)
+        tiltStep.distanceInMeters = 1
+        tiltStep.shouldShowDefaultTimer = true
+        tiltStep.shouldStartTimerAutomatically = true
+        tiltStep.shouldVibrateOnStart = false
+        tiltStep.shouldVibrateOnFinish = true
+        tiltStep.shouldContinueOnFinish = true
         
         let completionStep = ORKCompletionStep(identifier: String(Identifier.CompletionStep))
+        completionStep.title = "Activity Complete"
+        completionStep.text = "Your data will be analyzed and you will be notified when your results are ready."
         
         return ORKOrderedTask(identifier: String(Identifier.ImageCaptureTask), steps: [
             instructionStep,

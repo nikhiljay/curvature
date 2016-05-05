@@ -30,6 +30,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import UIKit
 import ResearchKit
+import CoreMotion
 
 enum Activity: Int {
     case Survey, Picture, Tilt
@@ -70,12 +71,15 @@ extension ActivityViewController : ORKTaskViewControllerDelegate {
     
     func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
         // Handle results using taskViewController.result
+        motionManager.stopGyroUpdates()
         taskViewController.dismissViewControllerAnimated(true, completion: nil)
     }
 }
 
 class ActivityViewController: UITableViewController {
     // MARK: UITableViewDataSource
+    
+    var motionManager = CMMotionManager()
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard section == 0 else { return 0 }
@@ -109,6 +113,24 @@ class ActivityViewController: UITableViewController {
 
             case .Tilt:
                 taskViewController = ORKTaskViewController(task: StudyTasks.tiltTask, taskRunUUID: NSUUID())
+                if motionManager.gyroAvailable {
+                    var values: [String] = []
+                    
+                    motionManager.gyroUpdateInterval = 1.0
+                    motionManager.startGyroUpdatesToQueue(NSOperationQueue.mainQueue(), withHandler: { (gyroData, NSError) -> Void in
+                        var degrees = (gyroData?.rotationRate.y)! * 180 / M_PI
+                        var yTotal: Double = 0.0
+                        degrees -= 0.4
+                        
+                        if (degrees > 0.2 || degrees < -0.2) {
+                            yTotal += degrees;
+                        }
+                        
+                        let y: String = String(format: "%.02f", yTotal)
+                        values.append(y)
+                        print(values)
+                    })
+                }
         }
         
         taskViewController.outputDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
