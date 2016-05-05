@@ -29,23 +29,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 import ResearchKit
+import CoreMotion
 
 struct StudyTasks {
-    
-    static let tappingTask: ORKOrderedTask = {
-        let intendedUseDescription = "Finger tapping is a universal way to communicate."
-        
-        return ORKOrderedTask.twoFingerTappingIntervalTaskWithIdentifier("TappingTask", intendedUseDescription: intendedUseDescription, duration: 10, options: ORKPredefinedTaskOption.None)
-    }()
-    
-    static let pictureTask: ORKOrderedTask = {
-        let intendedUseDescription = "A picture of the back can determine the angles of scoliosis."
-        
-        let step = ORKStep(identifier: "hi")
-        let task = ORKOrderedTask(identifier: "test", steps: [step])
-        
-        return task
-    }()
     
     private enum Identifier {
         // Task with a form, where multiple items appear on one page.
@@ -60,6 +46,8 @@ struct StudyTasks {
         case IntroStep
         case QuestionStep
         case SummaryStep
+        case CountDownStep
+        case CompletionStep
         
         // Task with a Boolean question.
         case BooleanQuestionTask
@@ -174,39 +162,9 @@ struct StudyTasks {
         case ToneAudiometryTask
         case TowerOfHanoi
         case TwoFingerTappingIntervalTask
+        case TiltTask
+        case TiltTutorial
     }
-    
-    static var imageCaptureTask: ORKTask {
-        // Create the intro step.
-        let instructionStep = ORKInstructionStep(identifier: String(Identifier.IntroStep))
-        
-        instructionStep.title = NSLocalizedString("Take a Picture", comment: "")
-        
-        instructionStep.text = "Someone else should take a picture of your back for determining angles of scoliosis."
-        
-        let back = UIImage(named: "back")!
-        instructionStep.image = back
-        
-        let imageCaptureStep = ORKImageCaptureStep(identifier: String(Identifier.ImageCaptureStep))
-        imageCaptureStep.optional = false
-        imageCaptureStep.accessibilityInstructions = NSLocalizedString("Capture most of the back in the rectangle frame.", comment: "")
-        imageCaptureStep.accessibilityHint = NSLocalizedString("Use the preview as guidance.", comment: "")
-        
-        imageCaptureStep.templateImage = UIImage(named: "rectangle")!
-        
-        imageCaptureStep.templateImageInsets = UIEdgeInsets(top: 0.1, left: 0.1, bottom: 0.1, right: 0.1)
-        
-        return ORKOrderedTask(identifier: String(Identifier.ImageCaptureTask), steps: [
-            instructionStep,
-            imageCaptureStep
-        ])
-    }
-    
-    static let tiltTask: ORKOrderedTask = {
-        let intendedUseDescription = "Any imbalances in the rib cage could be a sign of scoliosis."
-        
-        return ORKOrderedTask.twoFingerTappingIntervalTaskWithIdentifier("TappingTask", intendedUseDescription: intendedUseDescription, duration: 10, options: ORKPredefinedTaskOption.None)
-    }()
     
     static let surveyTask: ORKOrderedTask = {
         var steps = [ORKStep]()
@@ -286,4 +244,58 @@ struct StudyTasks {
         
         return ORKOrderedTask(identifier: "SurveyTask", steps: steps)
     }()
+    
+    static var pictureTask: ORKTask {
+        // Create the intro step.
+        let instructionStep = ORKInstructionStep(identifier: String(Identifier.IntroStep))
+        
+        instructionStep.title = NSLocalizedString("Take a Picture", comment: "")
+        instructionStep.text = "Someone else should take a picture of your back for determining angles of scoliosis."
+        
+        let back = UIImage(named: "back")!
+        instructionStep.image = back
+        
+        let imageCaptureStep = ORKImageCaptureStep(identifier: String(Identifier.ImageCaptureStep))
+        imageCaptureStep.optional = false
+        imageCaptureStep.accessibilityInstructions = NSLocalizedString("Capture most of the back in the rectangle frame.", comment: "")
+        imageCaptureStep.accessibilityHint = NSLocalizedString("Use the preview as guidance.", comment: "")
+        
+        imageCaptureStep.templateImage = UIImage(named: "rectangle")!
+        
+        imageCaptureStep.templateImageInsets = UIEdgeInsets(top: 0.1, left: 0.1, bottom: 0.1, right: 0.1)
+        
+        return ORKOrderedTask(identifier: String(Identifier.ImageCaptureTask), steps: [
+            instructionStep,
+            imageCaptureStep
+        ])
+    }
+    
+    static var tiltTask: ORKTask {
+        let countDownStep = ORKCountdownStep(identifier: String(Identifier.CountDownStep))
+        
+        let instructionStep = ORKInstructionStep(identifier: String(Identifier.IntroStep))
+        instructionStep.title = NSLocalizedString("Bend", comment: "")
+        instructionStep.text = "Any imbalances in the rib cage could be a sign of scoliosis. This activity uses your iPhone's gyroscope to measure the rotational motion of your back."
+        let bend = UIImage(named: "bend")!
+        instructionStep.image = bend
+        
+        let tiltTutorial  = ORKInstructionStep(identifier: String(Identifier.TiltTutorial))
+        tiltTutorial.title = "Bend"
+        tiltTutorial.text = "Take your shirt off. ADD STUFF HERE"
+        
+        let tiltStep = ORKTiltStep(identifier: String(Identifier.TiltTask))
+        tiltStep.title = "Bend"
+        tiltStep.stuff = "hi"
+        
+        let completionStep = ORKCompletionStep(identifier: String(Identifier.CompletionStep))
+        
+        return ORKOrderedTask(identifier: String(Identifier.ImageCaptureTask), steps: [
+            instructionStep,
+            tiltTutorial,
+            countDownStep,
+            tiltStep,
+            completionStep
+        ])
+    }
+    
 }

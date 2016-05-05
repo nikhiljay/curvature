@@ -44,9 +44,9 @@ enum Activity: Int {
             case .Survey:
                 return "Survey"
             case .Picture:
-                return "Picture"
+                return "Cobb's Curve"
             case .Tilt:
-                return "Measuring Tilt"
+                return "Adam's Test"
         }
     }
     
@@ -55,7 +55,7 @@ enum Activity: Int {
             case .Survey:
                 return "Answer 6 short questions"
             case .Picture:
-                return "Take a picture"
+                return "Take a picture to identify abnormalities of your spinal curve"
             case .Tilt:
                 return "Measure asymmetry of your back"
         }
@@ -105,7 +105,7 @@ class ActivityViewController: UITableViewController {
                 taskViewController = ORKTaskViewController(task: StudyTasks.surveyTask, taskRunUUID: NSUUID())
             
             case .Picture:
-                taskViewController = ORKTaskViewController(task: StudyTasks.imageCaptureTask, taskRunUUID: NSUUID())
+                taskViewController = ORKTaskViewController(task: StudyTasks.pictureTask, taskRunUUID: NSUUID())
 
             case .Tilt:
                 taskViewController = ORKTaskViewController(task: StudyTasks.tiltTask, taskRunUUID: NSUUID())
