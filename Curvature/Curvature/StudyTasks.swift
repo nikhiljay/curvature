@@ -32,16 +32,178 @@ import ResearchKit
 
 struct StudyTasks {
     
-    static let microphoneTask: ORKOrderedTask = {
-        let intendedUseDescription = "Everyone's voice has unique characteristics."
-        let speechInstruction = "After the countdown, say Aaaaaaaaaaah for as long as you can. You'll have 10 seconds."
-        let shortSpeechInstruction = "Say Aaaaaaaaaaah for as long as you can."
-        
-        return ORKOrderedTask.audioTaskWithIdentifier("AudioTask", intendedUseDescription: intendedUseDescription, speechInstruction: speechInstruction, shortSpeechInstruction: shortSpeechInstruction, duration: 10, recordingSettings: nil, options: ORKPredefinedTaskOption.ExcludeAccelerometer)
-    }()
-    
     static let tappingTask: ORKOrderedTask = {
         let intendedUseDescription = "Finger tapping is a universal way to communicate."
+        
+        return ORKOrderedTask.twoFingerTappingIntervalTaskWithIdentifier("TappingTask", intendedUseDescription: intendedUseDescription, duration: 10, options: ORKPredefinedTaskOption.None)
+    }()
+    
+    static let pictureTask: ORKOrderedTask = {
+        let intendedUseDescription = "A picture of the back can determine the angles of scoliosis."
+        
+        let step = ORKStep(identifier: "hi")
+        let task = ORKOrderedTask(identifier: "test", steps: [step])
+        
+        return task
+    }()
+    
+    private enum Identifier {
+        // Task with a form, where multiple items appear on one page.
+        case FormTask
+        case FormStep
+        case FormItem01
+        case FormItem02
+        case FormItem03
+        
+        // Survey task specific identifiers.
+        case SurveyTask
+        case IntroStep
+        case QuestionStep
+        case SummaryStep
+        
+        // Task with a Boolean question.
+        case BooleanQuestionTask
+        case BooleanQuestionStep
+        
+        // Task with an example of date entry.
+        case DateQuestionTask
+        case DateQuestionStep
+        
+        // Task with an example of date and time entry.
+        case DateTimeQuestionTask
+        case DateTimeQuestionStep
+        
+        // Task with an image choice question.
+        case ImageChoiceQuestionTask
+        case ImageChoiceQuestionStep
+        
+        // Task with a location entry.
+        case LocationQuestionTask
+        case LocationQuestionStep
+        
+        // Task with examples of numeric questions.
+        case NumericQuestionTask
+        case NumericQuestionStep
+        case NumericNoUnitQuestionStep
+        
+        // Task with examples of questions with sliding scales.
+        case ScaleQuestionTask
+        case DiscreteScaleQuestionStep
+        case ContinuousScaleQuestionStep
+        case DiscreteVerticalScaleQuestionStep
+        case ContinuousVerticalScaleQuestionStep
+        case TextScaleQuestionStep
+        case TextVerticalScaleQuestionStep
+        
+        // Task with an example of free text entry.
+        case TextQuestionTask
+        case TextQuestionStep
+        
+        // Task with an example of a multiple choice question.
+        case TextChoiceQuestionTask
+        case TextChoiceQuestionStep
+        
+        // Task with an example of time of day entry.
+        case TimeOfDayQuestionTask
+        case TimeOfDayQuestionStep
+        
+        // Task with an example of time interval entry.
+        case TimeIntervalQuestionTask
+        case TimeIntervalQuestionStep
+        
+        // Task with a value picker.
+        case ValuePickerChoiceQuestionTask
+        case ValuePickerChoiceQuestionStep
+        
+        // Task with an example of validated text entry.
+        case ValidatedTextQuestionTask
+        case ValidatedTextQuestionStepEmail
+        case ValidatedTextQuestionStepDomain
+        
+        // Image capture task specific identifiers.
+        case ImageCaptureTask
+        case ImageCaptureStep
+        
+        // Task with an example of waiting.
+        case WaitTask
+        case WaitStepDeterminate
+        case WaitStepIndeterminate
+        
+        // Eligibility task specific indentifiers.
+        case EligibilityTask
+        case EligibilityIntroStep
+        case EligibilityFormStep
+        case EligibilityFormItem01
+        case EligibilityFormItem02
+        case EligibilityFormItem03
+        case EligibilityIneligibleStep
+        case EligibilityEligibleStep
+        
+        // Consent task specific identifiers.
+        case ConsentTask
+        case VisualConsentStep
+        case ConsentSharingStep
+        case ConsentReviewStep
+        case ConsentDocumentParticipantSignature
+        case ConsentDocumentInvestigatorSignature
+        
+        // Account creation task specific identifiers.
+        case AccountCreationTask
+        case RegistrationStep
+        case WaitStep
+        case VerificationStep
+        
+        // Login task specific identifiers.
+        case LoginTask
+        case LoginStep
+        case LoginWaitStep
+        
+        // Passcode task specific identifiers.
+        case PasscodeTask
+        case PasscodeStep
+        
+        // Active tasks.
+        case AudioTask
+        case FitnessTask
+        case HolePegTestTask
+        case PSATTask
+        case ReactionTime
+        case ShortWalkTask
+        case SpatialSpanMemoryTask
+        case TimedWalkTask
+        case ToneAudiometryTask
+        case TowerOfHanoi
+        case TwoFingerTappingIntervalTask
+    }
+    
+    static var imageCaptureTask: ORKTask {
+        // Create the intro step.
+        let instructionStep = ORKInstructionStep(identifier: String(Identifier.IntroStep))
+        
+        instructionStep.title = NSLocalizedString("Take a Picture", comment: "")
+        
+        instructionStep.text = "Someone else should take a picture of your back for determining angles of scoliosis."
+        
+        let back = UIImage(named: "back")!
+        instructionStep.image = back
+        
+        let imageCaptureStep = ORKImageCaptureStep(identifier: String(Identifier.ImageCaptureStep))
+        imageCaptureStep.optional = false
+        imageCaptureStep.accessibilityInstructions = NSLocalizedString("Capture most of the back in the rectangle frame.", comment: "")
+        imageCaptureStep.accessibilityHint = NSLocalizedString("Use the preview as guidance.", comment: "")
+        
+        imageCaptureStep.templateImage = UIImage(named: "rectangle")!
+        
+        imageCaptureStep.templateImageInsets = UIEdgeInsets(top: 0.1, left: 0.1, bottom: 0.1, right: 0.1)
+        
+        return ORKOrderedTask(identifier: String(Identifier.ImageCaptureTask), steps: [
+            instructionStep,
+            imageCaptureStep
+        ])
+    }
+    
+    static let tiltTask: ORKOrderedTask = {
+        let intendedUseDescription = "Any imbalances in the rib cage could be a sign of scoliosis."
         
         return ORKOrderedTask.twoFingerTappingIntervalTaskWithIdentifier("TappingTask", intendedUseDescription: intendedUseDescription, duration: 10, options: ORKPredefinedTaskOption.None)
     }()

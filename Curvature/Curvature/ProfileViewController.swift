@@ -38,7 +38,7 @@ class ProfileViewController: UITableViewController, HealthClientType {
     let healthObjectTypes = [
         HKObjectType.characteristicTypeForIdentifier(HKCharacteristicTypeIdentifierDateOfBirth)!,
         HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeight)!,
-        HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierBodyMass)!
+        HKObjectType.characteristicTypeForIdentifier(HKCharacteristicTypeIdentifierBiologicalSex)!
     ]
     
     var healthStore: HKHealthStore?
@@ -84,12 +84,10 @@ class ProfileViewController: UITableViewController, HealthClientType {
                 configureCellWithDateOfBirth(cell)
             
             case HKQuantityTypeIdentifierHeight:
-                let title = NSLocalizedString("Height", comment: "")
-                configureCell(cell, withTitleText: title, valueForQuantityTypeIdentifier: objectType.identifier)
-                
-            case HKQuantityTypeIdentifierBodyMass:
-                let title = NSLocalizedString("Weight", comment: "")
-                configureCell(cell, withTitleText: title, valueForQuantityTypeIdentifier: objectType.identifier)
+                configureCellWithHeight(cell, valueForQuantityTypeIdentifier: objectType.identifier)
+    
+            case HKCharacteristicTypeIdentifierBiologicalSex:
+                configureCellWithBiologicalSex(cell)
             
             default:
                 fatalError("Unexpected health object type identifier - \(objectType.identifier)")
@@ -125,18 +123,37 @@ class ProfileViewController: UITableViewController, HealthClientType {
         }
     }
     
-    func configureCell(cell: ProfileStaticTableViewCell, withTitleText titleText: String, valueForQuantityTypeIdentifier identifier: String) {
+    func configureCellWithBiologicalSex(cell: ProfileStaticTableViewCell) {
         // Set the default cell content.
-        cell.titleLabel.text = titleText
+        cell.titleLabel.text = NSLocalizedString("Gender", comment: "")
         cell.valueLabel.text = NSLocalizedString("-", comment: "")
         
-        /*
-            Check a health store has been set and a `HKQuantityType` can be
-            created with the identifier provided.
-        */
-        guard let healthStore = healthStore, quantityType = HKQuantityType.quantityTypeForIdentifier(identifier) else { return }
+        // Update the value label with the date of birth from the health store.
+        guard let healthStore = healthStore else { return }
         
-        // Get the most recent entry from the health store.
+        do {
+            let gender = try healthStore.biologicalSex()
+            if (gender.biologicalSex.rawValue == 0) {
+                cell.valueLabel.text = "Not Set"
+            } else if (gender.biologicalSex.rawValue == 1) {
+                cell.valueLabel.text = "Female"
+            } else if (gender.biologicalSex.rawValue == 2) {
+                cell.valueLabel.text = "Male"
+            } else {
+                cell.valueLabel.text = "Other"
+            }
+        }
+        catch {
+        }
+    }
+    
+    func configureCellWithHeight(cell: ProfileStaticTableViewCell, valueForQuantityTypeIdentifier identifier: String) {
+        // Set the default cell content.
+        cell.titleLabel.text = NSLocalizedString("Height", comment: "")
+        cell.valueLabel.text = NSLocalizedString("-", comment: "")
+        
+        // Update the value label with the date of birth from the health store.
+        guard let healthStore = healthStore, quantityType = HKQuantityType.quantityTypeForIdentifier(identifier) else { return }
         healthStore.mostRecentQauntitySampleOfType(quantityType) { quantity, _ in
             guard let quantity = quantity else { return }
             
@@ -144,10 +161,13 @@ class ProfileViewController: UITableViewController, HealthClientType {
             NSOperationQueue.mainQueue().addOperationWithBlock() {
                 guard let indexPath = self.indexPathForObjectTypeIdentifier(identifier) else { return }
                 guard let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? ProfileStaticTableViewCell else { return }
+                let feet = quantity.doubleValueForUnit(HKUnit.footUnit())
+                let inches = (feet - floor(feet)) * 12
                 
-                cell.valueLabel.text = "\(quantity)"
+                cell.valueLabel.text = "\(Int(feet))' \(Int(inches))''"
             }
         }
+            
     }
     
     // MARK: Convenience

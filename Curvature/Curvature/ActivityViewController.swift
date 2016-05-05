@@ -32,7 +32,7 @@ import UIKit
 import ResearchKit
 
 enum Activity: Int {
-    case Survey, Microphone, Tapping
+    case Survey, Picture, Tilt
     
     static var allValues: [Activity] {
         var idx = 0
@@ -43,10 +43,10 @@ enum Activity: Int {
         switch self {
             case .Survey:
                 return "Survey"
-            case .Microphone:
-                return "Microphone"
-            case .Tapping:
-                return "Tapping"
+            case .Picture:
+                return "Picture"
+            case .Tilt:
+                return "Measuring Tilt"
         }
     }
     
@@ -54,11 +54,23 @@ enum Activity: Int {
         switch self {
             case .Survey:
                 return "Answer 6 short questions"
-            case .Microphone:
-                return "Voice evaluation"
-            case .Tapping:
-                return "Test tapping speed"
+            case .Picture:
+                return "Take a picture"
+            case .Tilt:
+                return "Measure asymmetry of your back"
         }
+    }
+}
+
+extension ActivityViewController : ORKTaskViewControllerDelegate {
+    
+    func taskViewController(taskViewController: ORKTaskViewController, stepViewControllerWillAppear stepViewController: ORKStepViewController) {
+        // Example data processing for the wait step.
+    }
+    
+    func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
+        // Handle results using taskViewController.result
+        taskViewController.dismissViewControllerAnimated(true, completion: nil)
     }
 }
 
@@ -92,38 +104,18 @@ class ActivityViewController: UITableViewController {
             case .Survey:
                 taskViewController = ORKTaskViewController(task: StudyTasks.surveyTask, taskRunUUID: NSUUID())
             
-            case .Microphone:
-                taskViewController = ORKTaskViewController(task: StudyTasks.microphoneTask, taskRunUUID: NSUUID())
-                
-                do {
-                    let defaultFileManager = NSFileManager.defaultManager()
-                    
-                    // Identify the documents directory.
-                    let documentsDirectory = try defaultFileManager.URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
-                    
-                    // Create a directory based on the `taskRunUUID` to store output from the task.
-                    let outputDirectory = documentsDirectory.URLByAppendingPathComponent(taskViewController.taskRunUUID.UUIDString)
-                    try defaultFileManager.createDirectoryAtURL(outputDirectory, withIntermediateDirectories: true, attributes: nil)
-                    
-                    taskViewController.outputDirectory = outputDirectory
-                }
-                catch let error as NSError {
-                    fatalError("The output directory for the task with UUID: \(taskViewController.taskRunUUID.UUIDString) could not be created. Error: \(error.localizedDescription)")
-                }
-                
-            case .Tapping:
-                taskViewController = ORKTaskViewController(task: StudyTasks.tappingTask, taskRunUUID: NSUUID())
+            case .Picture:
+                taskViewController = ORKTaskViewController(task: StudyTasks.imageCaptureTask, taskRunUUID: NSUUID())
+
+            case .Tilt:
+                taskViewController = ORKTaskViewController(task: StudyTasks.tiltTask, taskRunUUID: NSUUID())
         }
-
+        
+        taskViewController.outputDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
         taskViewController.delegate = self
-        navigationController?.presentViewController(taskViewController, animated: true, completion: nil)
-    }
-}
-
-extension ActivityViewController : ORKTaskViewControllerDelegate {
-    
-    func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
-        // Handle results using taskViewController.result
-        taskViewController.dismissViewControllerAnimated(true, completion: nil)
+        
+        navigationController?.presentViewController(taskViewController, animated: true, completion: {
+            tableView.cellForRowAtIndexPath(indexPath)!.accessoryType = .Checkmark
+        })
     }
 }

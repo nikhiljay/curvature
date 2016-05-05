@@ -45,7 +45,7 @@ class OnboardingViewController: UIViewController {
         let reviewConsentStep = ORKConsentReviewStep(identifier: "ConsentReviewStep", signature: signature, inDocument: consentDocument)
         
         reviewConsentStep.text = "Review the consent form."
-        reviewConsentStep.reasonForConsent = "Consent to join the Developer Health Research Study."
+        reviewConsentStep.reasonForConsent = "Consent to join the Scoliosis Research Study."
         
         let passcodeStep = ORKPasscodeStep(identifier: "Passcode")
         passcodeStep.text = "Now you will create a passcode to identify yourself to the app and protect access to information you've entered."
