@@ -42,7 +42,7 @@ struct StudyTasks {
         case FormItem03
         
         // Survey task specific identifiers.
-        case SurveyTask
+        case SurveyKnowledgeStep
         case IntroStep
         case QuestionStep
         case SummaryStep
@@ -166,83 +166,157 @@ struct StudyTasks {
         case TiltTutorial
     }
     
-    static let surveyTask: ORKOrderedTask = {
+    //KNOWLEDGE SURVEY!!!!!!!!!!!!!!!!!!
+    static let KnowledgeSurveyTask: ORKOrderedTask = {
         var steps = [ORKStep]()
         
         // Instruction step
         let instructionStep = ORKInstructionStep(identifier: "IntroStep")
-        instructionStep.title = "Knoweledge of the Universe Survey"
-        instructionStep.text = "Please answer these 6 questions to the best of your ability. It's okay to skip a question if you don't know the answer."
+        instructionStep.title = "Scoliosis Knowledge Survey"
+        instructionStep.text = "Please answer the following 6 questions to the best of your ability. It's okay to skip a question if you don't know the answer."
         
         steps += [instructionStep]
         
+        // Definition question using text choice
+        let definitionChoiceTitle = "What is scoliosis?"
+        let definitionTextChoices = [
+            ORKTextChoice(text: "Damage to any part of the spinal cord or nerves.", value: 0),
+            ORKTextChoice(text: "A sprain, strain, or tear to a muscle or ligament in the back.", value: 1),
+            ORKTextChoice(text: "An abnormal lateral curvature of the spine.", value: 2),
+            ORKTextChoice(text: "Painful inflammation and stiffness of the back.", value: 3)
+        ]
+        let definitionChoiceAnswerFormat: ORKTextChoiceAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithStyle(.SingleChoice, textChoices: definitionTextChoices)
+        let definitionChoiceQuestionStep = ORKQuestionStep(identifier: "DefinitionChoiceQuestionStep", title: definitionChoiceTitle, answer: definitionChoiceAnswerFormat)
+        
+        steps += [definitionChoiceQuestionStep]
+        
         // Quest question using text choice
-        let questQuestionStepTitle = "Which of the following is not a planet?"
+        let multipleChoiceTitle = "What are the causes of scoliosis? Pick more than one if necessary."
         let textChoices = [
-            ORKTextChoice(text: "Saturn", value: 0),
-            ORKTextChoice(text: "Uranus", value: 1),
-            ORKTextChoice(text: "Pluto", value: 2),
-            ORKTextChoice(text: "Mars", value: 3)
+            ORKTextChoice(text: "Bone abnormalities present at birth.", value: 0),
+            ORKTextChoice(text: "Bad posture.", value: 1),
+            ORKTextChoice(text: "Injury, previous major back surgery, or osteoporosis.", value: 2),
+            ORKTextChoice(text: "Inheritance.", value: 3),
+            ORKTextChoice(text: "Unknown.", value: 4)
         ]
-        let questAnswerFormat: ORKTextChoiceAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithStyle(.SingleChoice, textChoices: textChoices)
-        let questQuestionStep = ORKQuestionStep(identifier: "TextChoiceQuestionStep", title: questQuestionStepTitle, answer: questAnswerFormat)
+        let multipleChoiceAnswerFormat: ORKTextChoiceAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithStyle(.MultipleChoice, textChoices: textChoices)
+        let multipleChoiceQuestionStep = ORKQuestionStep(identifier: "TextChoiceQuestionStep", title: multipleChoiceTitle, answer: multipleChoiceAnswerFormat)
         
-        steps += [questQuestionStep]
+        steps += [multipleChoiceQuestionStep]
         
-        // Name question using text input
-        let nameAnswerFormat = ORKTextAnswerFormat(maximumLength: 25)
-        nameAnswerFormat.multipleLines = false
-        let nameQuestionStepTitle = "What do you think the next comet that's discovered should be named?"
-        let nameQuestionStep = ORKQuestionStep(identifier: "NameQuestionStep", title: nameQuestionStepTitle, answer: nameAnswerFormat)
+        // Cured question
+        let curedAnswerFormat = ORKBooleanAnswerFormat()
+        let curedQuestionStepTitle = "Can scoliosis be cured?"
+        let curedQuestionStep = ORKQuestionStep(identifier: "CuredQuestionStep", title: curedQuestionStepTitle, answer: curedAnswerFormat)
         
-        steps += [nameQuestionStep]
+        steps += [curedQuestionStep]
         
-        let shapeQuestionStepTitle = "Which shape is the closest to the shape of Messier object 101?"
-        let shapeTuples = [
-            (UIImage(named: "square")!, "Square"),
-            (UIImage(named: "pinwheel")!, "Pinwheel"),
-            (UIImage(named: "pentagon")!, "Pentagon"),
-            (UIImage(named: "circle")!, "Circle")
+        // Length question
+        let lengthQuestionStepTitle = "Is scoliosis a short term or long term condition?"
+        let lengthTextChoices = [
+            ORKTextChoice(text: "Short Term", value: 0),
+            ORKTextChoice(text: "Long Term", value: 1)
         ]
-        let imageChoices : [ORKImageChoice] = shapeTuples.map {
-            return ORKImageChoice(normalImage: $0.0, selectedImage: nil, text: $0.1, value: $0.1)
-        }
-        let shapeAnswerFormat: ORKImageChoiceAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithImageChoices(imageChoices)
-        let shapeQuestionStep = ORKQuestionStep(identifier: "ImageChoiceQuestionStep", title: shapeQuestionStepTitle, answer: shapeAnswerFormat)
+        let lengthAnswerFormat: ORKTextChoiceAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithStyle(.SingleChoice, textChoices: lengthTextChoices)
+        let lengthQuestionStep = ORKQuestionStep(identifier: "LengthQuestionStep", title: lengthQuestionStepTitle, answer: lengthAnswerFormat)
         
-        steps += [shapeQuestionStep]
+        steps += [lengthQuestionStep]
         
-        // Date question
-        let today = NSDate()
-        let dateAnswerFormat =  ORKAnswerFormat.dateAnswerFormatWithDefaultDate(nil, minimumDate: today, maximumDate: nil, calendar: nil)
-        let dateQuestionStepTitle = "When is the next solar eclipse?"
-        let dateQuestionStep = ORKQuestionStep(identifier: "DateQuestionStep", title: dateQuestionStepTitle, answer: dateAnswerFormat)
+        // Brace question
+        let braceAnswerFormat = ORKBooleanAnswerFormat()
+        let braceQuestionStepTitle = "Brace treatment is used for a child who is still growing to prevent progression of moderate spinal curves. Does bracing necessarily correct a spinal curve?"
+        let braceQuestionStep = ORKQuestionStep(identifier: "BraceQuestionStep", title: braceQuestionStepTitle, answer: braceAnswerFormat)
         
-        steps += [dateQuestionStep]
+        steps += [braceQuestionStep]
         
-        // Boolean question
-        let booleanAnswerFormat = ORKBooleanAnswerFormat()
-        let booleanQuestionStepTitle = "Is Venus larger than Saturn?"
-        let booleanQuestionStep = ORKQuestionStep(identifier: "BooleanQuestionStep", title: booleanQuestionStepTitle, answer: booleanAnswerFormat)
+        // Degrees question
+        let degreesAnswerFormat = ORKAnswerFormat.scaleAnswerFormatWithMaximumValue(90, minimumValue: 10, defaultValue: 0, step: 10, vertical: false, maximumValueDescription: "Degrees", minimumValueDescription: " ")
+        let degreesQuestionStepTitle = "A spinal curve of how many degrees is often recommended for surgery?"
+        let degreesQuestionStep = ORKQuestionStep(identifier: "DegreesQuestionStep", title: degreesQuestionStepTitle, answer: degreesAnswerFormat)
         
-        steps += [booleanQuestionStep]
-        
-        // Continuous question
-        let continuousAnswerFormat = ORKAnswerFormat.scaleAnswerFormatWithMaximumValue(150, minimumValue: 30, defaultValue: 20, step: 10, vertical: false, maximumValueDescription: "Objects", minimumValueDescription: " ")
-        let continuousQuestionStepTitle = "How many objects are in Messier's catalog?"
-        let continuousQuestionStep = ORKQuestionStep(identifier: "ContinuousQuestionStep", title: continuousQuestionStepTitle, answer: continuousAnswerFormat)
-        
-        steps += [continuousQuestionStep]
-        
+        steps += [degreesQuestionStep]
+
         // Summary step
-        
         let summaryStep = ORKCompletionStep(identifier: "SummaryStep")
         summaryStep.title = "Thank you."
         summaryStep.text = "We appreciate your time."
         
         steps += [summaryStep]
         
-        return ORKOrderedTask(identifier: "SurveyTask", steps: steps)
+        return ORKOrderedTask(identifier: "KnowledgeSurveyTask", steps: steps)
+    }()
+    
+    //BACKGROUND SURVEY!!!!!!!!!!!!!!!!!!!
+    static let BackgroundSurveyTask: ORKOrderedTask = {
+        var steps = [ORKStep]()
+        
+        // Instruction step
+        let instructionStep = ORKInstructionStep(identifier: "IntroStep")
+        instructionStep.title = "Scoliosis Background Survey"
+        instructionStep.text = "Please answer these 6 questions to the best of your ability. It's okay to skip a question if you don't know the answer."
+        
+        steps += [instructionStep]
+        
+        // Have question
+        let haveAnswerFormat = ORKBooleanAnswerFormat()
+        let haveQuestionStepTitle = "Do you have scoliosis?"
+        let haveQuestionStep = ORKQuestionStep(identifier: "HaveQuestionStep", title: haveQuestionStepTitle, answer: haveAnswerFormat)
+        
+        steps += [haveQuestionStep]
+        
+        // Age Question
+        let ageAnswerFormat: ORKNumericAnswerFormat = ORKNumericAnswerFormat.integerAnswerFormatWithUnit("years old")
+        ageAnswerFormat.minimum = 2
+        ageAnswerFormat.maximum = 90
+        let ageQuestionStepTitle = "How old were you when you were diagnosed with scoliosis?"
+        let ageQuestionStep = ORKQuestionStep(identifier: "AgeQuestionStep", title: ageQuestionStepTitle, answer: ageAnswerFormat)
+        
+        steps += [ageQuestionStep]
+        
+        // Type question using text choice
+        let typeChoiceTitle = "Which type of scoliosis do you have?"
+        let typetextChoices = [
+            ORKTextChoice(text: "Idiopathic scoliosis", value: 0),
+            ORKTextChoice(text: "Congenital scoliosis", value: 1),
+            ORKTextChoice(text: "Neuromuscular scoliosis", value: 2),
+            ORKTextChoice(text: "Degenerative scoliosis", value: 3),
+            ORKTextChoice(text: "Not sure which type of scoliosis", value: 4)
+        ]
+        let typeChoiceAnswerFormat: ORKTextChoiceAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithStyle(.SingleChoice, textChoices: typetextChoices)
+        let typeChoiceQuestionStep = ORKQuestionStep(identifier: "TextChoiceQuestionStep", title: typeChoiceTitle, answer: typeChoiceAnswerFormat)
+        
+        steps += [typeChoiceQuestionStep]
+        
+        // Degrees question
+        let degreesAnswerFormat = ORKAnswerFormat.scaleAnswerFormatWithMaximumValue(90, minimumValue: 10, defaultValue: 0, step: 10, vertical: false, maximumValueDescription: "Degrees", minimumValueDescription: " ")
+        let degreesQuestionStepTitle = "How many degrees is your spinal curve?"
+        let degreesQuestionStep = ORKQuestionStep(identifier: "DegreesQuestionStep", title: degreesQuestionStepTitle, answer: degreesAnswerFormat)
+        
+        steps += [degreesQuestionStep]
+        
+        // Brace question
+        let braceAnswerFormat = ORKBooleanAnswerFormat()
+        let braceQuestionStepTitle = "Do you use a brace?"
+        let braceQuestionStep = ORKQuestionStep(identifier: "BraceQuestionStep", title: braceQuestionStepTitle, answer: braceAnswerFormat)
+        
+        steps += [braceQuestionStep]
+        
+        // Else question using text input
+        let elseAnswerFormat = ORKTextAnswerFormat(maximumLength: 500)
+        elseAnswerFormat.multipleLines = true
+        let elseQuestionStepTitle = "Anything else we should know?"
+        let elseQuestionStep = ORKQuestionStep(identifier: "ElseQuestionStep", title: elseQuestionStepTitle, answer: elseAnswerFormat)
+        
+        steps += [elseQuestionStep]
+
+        // Summary step
+        let summaryStep = ORKCompletionStep(identifier: "SummaryStep")
+        summaryStep.title = "Thank you."
+        summaryStep.text = "We appreciate your time."
+        
+        steps += [summaryStep]
+        
+        return ORKOrderedTask(identifier: "BackgroundSurveyTask", steps: steps)
     }()
     
     static var pictureTask: ORKTask {

@@ -37,7 +37,8 @@ class HealthDataStep: ORKInstructionStep {
     let healthDataItemsToRead: Set<HKObjectType> = [
         HKObjectType.characteristicTypeForIdentifier(HKCharacteristicTypeIdentifierDateOfBirth)!,
         HKObjectType.characteristicTypeForIdentifier(HKCharacteristicTypeIdentifierBiologicalSex)!,
-        HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeight)!
+        HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeight)!,
+        HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierAppleExerciseTime)!
     ]
     
     let healthDataItemsToWrite: Set<HKSampleType> = []

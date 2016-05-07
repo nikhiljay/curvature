@@ -33,7 +33,7 @@ import ResearchKit
 import CoreMotion
 
 enum Activity: Int {
-    case Survey, Picture, Tilt
+    case KnowledgeSurvey, BackgroundSurvey, Picture, Tilt
     
     static var allValues: [Activity] {
         var idx = 0
@@ -42,8 +42,10 @@ enum Activity: Int {
     
     var title: String {
         switch self {
-            case .Survey:
-                return "Survey"
+            case .KnowledgeSurvey:
+                return "Knowledge Survey"
+            case .BackgroundSurvey:
+                return "Background Survey"
             case .Picture:
                 return "Cobb's Curve"
             case .Tilt:
@@ -53,8 +55,10 @@ enum Activity: Int {
     
     var subtitle: String {
         switch self {
-            case .Survey:
-                return "Answer 6 short questions"
+            case .KnowledgeSurvey:
+                return "Answer 6 short questions about your knowledge of scoliosis"
+            case .BackgroundSurvey:
+                return "Answer 6 short questions about your background of scoliosis"
             case .Picture:
                 return "Take a picture to identify abnormalities of your spinal curve"
             case .Tilt:
@@ -105,8 +109,11 @@ class ActivityViewController: UITableViewController {
         
         let taskViewController: ORKTaskViewController
         switch activity {
-            case .Survey:
-                taskViewController = ORKTaskViewController(task: StudyTasks.surveyTask, taskRunUUID: NSUUID())
+            case .KnowledgeSurvey:
+                taskViewController = ORKTaskViewController(task: StudyTasks.KnowledgeSurveyTask, taskRunUUID: NSUUID())
+            
+            case .BackgroundSurvey:
+                taskViewController = ORKTaskViewController(task: StudyTasks.BackgroundSurveyTask, taskRunUUID: NSUUID())
             
             case .Picture:
                 taskViewController = ORKTaskViewController(task: StudyTasks.pictureTask, taskRunUUID: NSUUID())

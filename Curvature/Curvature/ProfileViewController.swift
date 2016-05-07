@@ -104,7 +104,7 @@ class ProfileViewController: UITableViewController, HealthClientType {
     
     func configureCellWithDateOfBirth(cell: ProfileStaticTableViewCell) {
         // Set the default cell content.
-        cell.titleLabel.text = NSLocalizedString("Date of Birth", comment: "")
+        cell.titleLabel.text = NSLocalizedString("Age", comment: "")
         cell.valueLabel.text = NSLocalizedString("-", comment: "")
 
         // Update the value label with the date of birth from the health store.
