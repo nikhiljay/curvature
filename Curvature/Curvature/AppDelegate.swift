@@ -8,6 +8,7 @@
 
 import UIKit
 import ResearchKit
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -71,6 +72,24 @@ extension AppDelegate: ORKPasscodeDelegate {
     func passcodeViewControllerDidFinishWithSuccess(viewController: UIViewController) {
         containerViewController?.contentHidden = false
         viewController.dismissViewControllerAnimated(true, completion: nil)
+        
+        let ref = Firebase(url: "https://curvatureapp.firebaseio.com")
+        
+        //logout user for now
+//        ref.unauth()
+        
+        ref.observeAuthEventWithBlock({ authData in
+            if authData != nil {
+                // user authenticated
+                print(authData)
+            } else {
+                self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let initialViewController = storyboard.instantiateViewControllerWithIdentifier("accountVC") 
+                self.window?.rootViewController = initialViewController
+                self.window?.makeKeyAndVisible()
+            }
+        })
     }
     
     func passcodeViewControllerDidFailAuthentication(viewController: UIViewController) {

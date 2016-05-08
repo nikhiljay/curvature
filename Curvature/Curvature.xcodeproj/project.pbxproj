@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		311AEBF71CDF0898000EA996 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311AEBF61CDF0898000EA996 /* RegistrationViewController.swift */; };
+		311AEBF91CDFF4B6000EA996 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311AEBF81CDFF4B6000EA996 /* LoginViewController.swift */; };
 		31DF4AB21CD9BED100553E68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DF4AB11CD9BED100553E68 /* AppDelegate.swift */; };
 		31DF4AE51CD9C2A400553E68 /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DF4ACD1CD9C2A400553E68 /* ActivityViewController.swift */; };
 		31DF4AE61CD9C2A400553E68 /* AnimatableChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DF4ACE1CD9C2A400553E68 /* AnimatableChart.swift */; };
@@ -36,6 +38,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		311AEBF61CDF0898000EA996 /* RegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
+		311AEBF81CDFF4B6000EA996 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		31DF4AAE1CD9BED100553E68 /* Curvature.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Curvature.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		31DF4AB11CD9BED100553E68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		31DF4ABD1CD9BED100553E68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -117,6 +121,8 @@
 				31DF4AD11CD9C2A400553E68 /* Main.storyboard */,
 				31DF4AD01CD9C2A400553E68 /* LaunchScreen.storyboard */,
 				31DF4B041CD9C37E00553E68 /* Supporting Files */,
+				311AEBF61CDF0898000EA996 /* RegistrationViewController.swift */,
+				311AEBF81CDFF4B6000EA996 /* LoginViewController.swift */,
 			);
 			path = Curvature;
 			sourceTree = "<group>";
@@ -346,6 +352,7 @@
 				31DF4AF91CD9C2A400553E68 /* ResearchContainerSegue.swift in Sources */,
 				31DF4AF31CD9C2A400553E68 /* OnboardingViewController.swift in Sources */,
 				31DF4AFB1CD9C2A400553E68 /* StudyTasks.swift in Sources */,
+				311AEBF91CDFF4B6000EA996 /* LoginViewController.swift in Sources */,
 				31DF4AF11CD9C2A400553E68 /* IntroductionViewController.swift in Sources */,
 				31DF4AF21CD9C2A400553E68 /* LineGraphDataSource.swift in Sources */,
 				31DF4AEB1CD9C2A400553E68 /* DashboardTableViewController.swift in Sources */,
@@ -353,6 +360,7 @@
 				31DF4AEF1CD9C2A400553E68 /* HealthDataStepViewController.swift in Sources */,
 				31DF4AB21CD9BED100553E68 /* AppDelegate.swift in Sources */,
 				31DF4AF81CD9C2A400553E68 /* ProfileViewController.swift in Sources */,
+				311AEBF71CDF0898000EA996 /* RegistrationViewController.swift in Sources */,
 				31DF4AF61CD9C2A400553E68 /* ProfileHeaderView.swift in Sources */,
 				31DF4AFA1CD9C2A400553E68 /* ResearchContainerViewController.swift in Sources */,
 				31DF4AEE1CD9C2A400553E68 /* HealthDataStep.swift in Sources */,

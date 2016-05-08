@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Curvature/OnboardingViewController.swift"
-            timestampString = "484035207.70795"
+            timestampString = "484377292.007976"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "37"
-            endingLineNumber = "37"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
             landmarkName = "joinButtonTapped(_:)"
             landmarkType = "5">
          </BreakpointContent>

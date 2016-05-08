@@ -39,6 +39,7 @@ class DashboardTableViewController: UITableViewController {
     @IBOutlet var pieChart: ORKPieChartView!
     @IBOutlet var descreteGraph: ORKDiscreteGraphChartView!
     @IBOutlet var lineGraph: ORKLineGraphChartView!
+    @IBOutlet weak var healthActivityIndicator: UIActivityIndicatorView!
     
     var allCharts: [UIView] {
         return [pieChart, descreteGraph, lineGraph]
@@ -53,14 +54,19 @@ class DashboardTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        healthActivityIndicator.startAnimating()
+        
         let myRootRef = Firebase(url:"https://curvatureapp.firebaseio.com")
         myRootRef.observeEventType(.Value, withBlock: {
             snapshot in
-            for data in snapshot.value as! [String: String] {
-                if data.0 == "condition" {
-                    self.conditionLabel.text = data.1
+            myRootRef.observeAuthEventWithBlock({ authData in
+                if authData != nil {
+                    // user authenticated
+                    let condition = snapshot.value["users"]!![authData.uid]!!["condition"]!
+                    self.conditionLabel.text = condition as? String
+                    self.healthActivityIndicator.stopAnimating()
                 }
-            }
+            })
         })
         
         // Set the data source for each graph
