@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Firebase.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Curvature.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -17,12 +22,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>7BA0E1729C44F4F01ADB65523D4FBA4F</key>
+		<key>08CA7975AC9AD185232872DB8FAA3BAC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>982605637C32DFF87092E9A83486D504</key>
+		<key>859336B57C963761EFE565926E43E5A3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B7AC9326D819482593FE118E915409D7</key>
 		<dict>
 			<key>primary</key>
 			<true/>

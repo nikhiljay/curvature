@@ -30,10 +30,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import UIKit
 import ResearchKit
+import Firebase
 
 class DashboardTableViewController: UITableViewController {
     // MARK: Properties
     
+    @IBOutlet weak var conditionLabel: UILabel!
     @IBOutlet var pieChart: ORKPieChartView!
     @IBOutlet var descreteGraph: ORKDiscreteGraphChartView!
     @IBOutlet var lineGraph: ORKLineGraphChartView!
@@ -50,6 +52,16 @@ class DashboardTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let myRootRef = Firebase(url:"https://curvatureapp.firebaseio.com")
+        myRootRef.observeEventType(.Value, withBlock: {
+            snapshot in
+            for data in snapshot.value as! [String: String] {
+                if data.0 == "condition" {
+                    self.conditionLabel.text = data.1
+                }
+            }
+        })
         
         // Set the data source for each graph
         pieChart.dataSource = pieChartDataSource

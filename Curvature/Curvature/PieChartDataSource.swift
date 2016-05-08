@@ -29,6 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 import ResearchKit
+import Firebase
 
 class PieChartDataSource: NSObject, ORKPieChartViewDataSource {
     // MARK: Types
@@ -42,9 +43,8 @@ class PieChartDataSource: NSObject, ORKPieChartViewDataSource {
     // MARK: Properties
     
     let segments = [
-        Segment(title: "Title 1", value: 10.0, color: UIColor(red: 217/225, green: 217/255, blue: 217/225, alpha: 1)),
-        Segment(title: "Title 2", value: 25.0, color: UIColor(red: 142/255, green: 142/255, blue: 147/255, alpha: 1)),
-        Segment(title: "Title 3", value: 45.0, color: UIColor(red: 244/225, green: 190/255, blue: 74/225, alpha: 1))
+        Segment(title: "Completed", value: 10.0, color: UIColor(red: 101/225, green: 201/255, blue: 122/225, alpha: 1)),
+        Segment(title: "Pending", value: 25.0, color: UIColor(red: 246/255, green: 246/255, blue: 246/255, alpha: 1))
     ]
     
     // MARK: ORKPieChartViewDataSource

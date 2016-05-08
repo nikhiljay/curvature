@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '6380B0A4F0D93E0548DD477D'
+               BlueprintIdentifier = 'ACE8BD91E451912AC3A14A75'
                BlueprintName = 'Pods-Curvature'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'Pods_Curvature.framework'>
