@@ -89,8 +89,10 @@ class DashboardTableViewController: UITableViewController, ORKPieChartViewDataSo
                     self.healthActivityIndicator.stopAnimating()
                     
                     var taskCompletion = snapshot.value["users"]!![authData.uid]!!["taskCompletion"]! as! CGFloat!
-                    if (taskCompletion == 0) {
+                    if (taskCompletion < 1) {
                         taskCompletion = 1
+                    } else if (taskCompletion > 99) {
+                        taskCompletion = 99
                     }
                     completionHandler(percentage: taskCompletion)
                 }
