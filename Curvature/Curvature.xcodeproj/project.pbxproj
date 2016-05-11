@@ -86,6 +86,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		311AEBFA1CE008BF000EA996 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				311AEBF61CDF0898000EA996 /* RegistrationViewController.swift */,
+				311AEBF81CDFF4B6000EA996 /* LoginViewController.swift */,
+			);
+			name = Account;
+			sourceTree = "<group>";
+		};
 		31DF4AA51CD9BED100553E68 = {
 			isa = PBXGroup;
 			children = (
@@ -117,12 +126,11 @@
 				31DF4B011CD9C33C00553E68 /* Withdrawal */,
 				31DF4B021CD9C35400553E68 /* Steps */,
 				31DF4B031CD9C36300553E68 /* Protocols */,
+				311AEBFA1CE008BF000EA996 /* Account */,
 				31DF4AB11CD9BED100553E68 /* AppDelegate.swift */,
 				31DF4AD11CD9C2A400553E68 /* Main.storyboard */,
 				31DF4AD01CD9C2A400553E68 /* LaunchScreen.storyboard */,
 				31DF4B041CD9C37E00553E68 /* Supporting Files */,
-				311AEBF61CDF0898000EA996 /* RegistrationViewController.swift */,
-				311AEBF81CDFF4B6000EA996 /* LoginViewController.swift */,
 			);
 			path = Curvature;
 			sourceTree = "<group>";

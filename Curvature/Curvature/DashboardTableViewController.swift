@@ -32,7 +32,7 @@ import UIKit
 import ResearchKit
 import Firebase
 
-class DashboardTableViewController: UITableViewController {
+class DashboardTableViewController: UITableViewController, ORKPieChartViewDataSource {
     // MARK: Properties
     
     @IBOutlet weak var conditionLabel: UILabel!
@@ -45,9 +45,8 @@ class DashboardTableViewController: UITableViewController {
         return [pieChart, descreteGraph, lineGraph]
     }
     
-    let pieChartDataSource = PieChartDataSource()
     let descreteGraphDataSource = DiscreteGraphDataSource()
-    let lineGraphDataSource = LineGraphDataSource()    
+    let lineGraphDataSource = LineGraphDataSource()
     
     // MARK: UIViewController
     
@@ -56,6 +55,29 @@ class DashboardTableViewController: UITableViewController {
         
         healthActivityIndicator.startAnimating()
         
+        loadData { (percentage) in
+            self.activityCompletionPercentage = percentage
+            self.pieChart.dataSource = self
+            self.reloadCharts()
+        }
+        reloadCharts()
+        
+        // Set the data source for each graph
+        descreteGraph.dataSource = descreteGraphDataSource
+        lineGraph.dataSource = lineGraphDataSource
+        
+        // Set the table view to automatically calculate the height of cells.
+        tableView.estimatedRowHeight = tableView.rowHeight
+        tableView.rowHeight = UITableViewAutomaticDimension
+    }
+    
+    func refresh(sender: AnyObject) {
+        loadData { (percentage) in
+            self.activityCompletionPercentage = percentage
+        }
+    }
+    
+    func loadData(completionHandler: (percentage: CGFloat) -> ()) {
         let myRootRef = Firebase(url:"https://curvatureapp.firebaseio.com")
         myRootRef.observeEventType(.Value, withBlock: {
             snapshot in
@@ -65,29 +87,73 @@ class DashboardTableViewController: UITableViewController {
                     let condition = snapshot.value["users"]!![authData.uid]!!["condition"]!
                     self.conditionLabel.text = condition as? String
                     self.healthActivityIndicator.stopAnimating()
+                    
+                    var taskCompletion = snapshot.value["users"]!![authData.uid]!!["taskCompletion"]! as! CGFloat!
+                    if (taskCompletion == 0) {
+                        taskCompletion = 1
+                    }
+                    completionHandler(percentage: taskCompletion)
                 }
             })
         })
+    }
+    
+    func reloadCharts() {
+        let visibleCells = tableView.visibleCells
+        let visibleAnimatableCharts = visibleCells.flatMap { animatableChartInCell($0) }
         
-        // Set the data source for each graph
-        pieChart.dataSource = pieChartDataSource
-        descreteGraph.dataSource = descreteGraphDataSource
-        lineGraph.dataSource = lineGraphDataSource
-        
-        // Set the table view to automatically calculate the height of cells.
-        tableView.estimatedRowHeight = tableView.rowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
+        for chart in visibleAnimatableCharts {
+            chart.animateWithDuration(0.5)
+        }
     }
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
         // Animate any visible charts
-        let visibleCells = tableView.visibleCells
-        let visibleAnimatableCharts = visibleCells.flatMap { animatableChartInCell($0) }
-        
-        for chart in visibleAnimatableCharts {
-            chart.animateWithDuration(0.5)
+        reloadCharts()
+    }
+    
+    // MARK: PieView
+    
+    func numberOfSegmentsInPieChartView(pieChartView: ORKPieChartView) -> Int {
+        if activityCompletionPercentage > 0 {
+            return 2
+        } else {
+            return 1
+        }
+    }
+    
+    enum PieChartSegment: Int {
+        case Completed, Remaining
+    }
+    
+    var activityCompletionPercentage: CGFloat = 1
+    
+    func pieChartView(pieChartView: ORKPieChartView, valueForSegmentAtIndex index: Int) -> CGFloat {
+        switch PieChartSegment(rawValue: index)! {
+        case .Completed:
+            return activityCompletionPercentage
+        case .Remaining:
+            return 100 - activityCompletionPercentage
+        }
+    }
+    
+    func pieChartView(pieChartView: ORKPieChartView, colorForSegmentAtIndex index: Int) -> UIColor {
+        switch PieChartSegment(rawValue: index)! {
+        case .Completed:
+            return UIColor(red: 101/225, green: 201/255, blue: 122/225, alpha: 1)
+        case .Remaining:
+            return UIColor(red: 246/255, green: 246/255, blue: 246/255, alpha: 1)
+        }
+    }
+    
+    func pieChartView(pieChartView: ORKPieChartView, titleForSegmentAtIndex index: Int) -> String {
+        switch PieChartSegment(rawValue: index)! {
+        case .Completed:
+            return NSLocalizedString("Completed", comment: "")
+        case .Remaining:
+            return NSLocalizedString("Remaining", comment: "")
         }
     }
     

@@ -38,7 +38,8 @@ class RegistrationViewController: UIViewController {
                         
                         let newUser = [
                             "name" : self.nameTextField.text as AnyObject!,
-                            "condition" : "Unknown" as AnyObject!
+                            "condition" : "Unknown" as AnyObject!,
+                            "taskCompletion" : 0 as AnyObject!
                         ]
 
                         ref.childByAppendingPath("users").childByAppendingPath(authData.uid).setValue(newUser)

@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import UIKit
 import ResearchKit
 import HealthKit
+import Firebase
 
 class ProfileViewController: UITableViewController, HealthClientType {
     // MARK: Properties
@@ -67,6 +68,12 @@ class ProfileViewController: UITableViewController, HealthClientType {
                 self.tableView.reloadRowsAtIndexPaths(allRowIndexPaths, withRowAnimation: .Automatic)
             }
         }
+    }
+    
+    @IBAction func logoutButtonPressed(sender: AnyObject) {
+        let ref = Firebase(url: "https://curvatureapp.firebaseio.com")
+        ref.unauth()
+        performSegueWithIdentifier("loggedOut", sender: self)
     }
     
     // MARK: UITableViewDataSource

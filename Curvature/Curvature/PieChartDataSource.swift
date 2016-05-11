@@ -36,16 +36,31 @@ class PieChartDataSource: NSObject, ORKPieChartViewDataSource {
     
     struct Segment {
         let title: String
-        let value: Float
+        var value: Float
         let color: UIColor
     }
     
     // MARK: Properties
     
-    let segments = [
-        Segment(title: "Completed", value: 10.0, color: UIColor(red: 101/225, green: 201/255, blue: 122/225, alpha: 1)),
-        Segment(title: "Pending", value: 25.0, color: UIColor(red: 246/255, green: 246/255, blue: 246/255, alpha: 1))
+    var segments = [
+        Segment(title: "Completed", value: 12000.0, color: UIColor(red: 101/225, green: 201/255, blue: 122/225, alpha: 1)),
+        Segment(title: "Pending", value: 0.0, color: UIColor(red: 246/255, green: 246/255, blue: 246/255, alpha: 1))
     ]
+    
+    override init() {
+        super.init()
+        
+        let myRootRef = Firebase(url:"https://curvatureapp.firebaseio.com")
+        myRootRef.observeEventType(.Value, withBlock: {
+            snapshot in
+            myRootRef.observeAuthEventWithBlock({ authData in
+                if authData != nil {
+                    let condition = snapshot.value["users"]!![authData.uid]!!["taskCompletion"]! as! Float
+                    self.segments[1].value = condition
+                }
+            })
+        })
+    }
     
     // MARK: ORKPieChartViewDataSource
     

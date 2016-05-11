@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import UIKit
 import ResearchKit
 import CoreMotion
+import Firebase
 
 enum Activity: Int {
     case KnowledgeSurvey, BackgroundSurvey, Picture, Tilt
@@ -75,6 +76,26 @@ extension ActivityViewController : ORKTaskViewControllerDelegate {
     
     func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
         // Handle results using taskViewController.result
+        
+        let myRootRef = Firebase(url:"https://curvatureapp.firebaseio.com")
+        myRootRef.observeSingleEventOfType(.Value, withBlock: {
+            snapshot in
+            myRootRef.observeAuthEventWithBlock({ authData in
+                if authData != nil {
+                    
+                    let usersRef = myRootRef.childByAppendingPath("users")
+                    var taskCompletion = snapshot.value["users"]!![authData.uid]!!["taskCompletion"]! as! Int
+                    if taskCompletion < 100 {
+                        taskCompletion += 25
+                    }
+                    
+                    usersRef.updateChildValues([
+                        "\(authData.uid)/taskCompletion": taskCompletion
+                    ])
+                }
+            })
+        })
+        
         motionManager.stopGyroUpdates()
         taskViewController.dismissViewControllerAnimated(true, completion: nil)
     }
