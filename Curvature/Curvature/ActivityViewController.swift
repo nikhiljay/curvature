@@ -89,15 +89,17 @@ extension ActivityViewController : ORKTaskViewControllerDelegate {
                     let usersRef = myRootRef.childByAppendingPath("users")
                     
                     //Task Completion
-                    var taskCompletion = snapshot.value["users"]!![authData.uid]!!["taskCompletion"]! as! Int
+                    var taskCompletion = snapshot.value["users"]!![authData.uid]!!["taskCompletion"]! as! Double
+                    let tasks = snapshot.value["users"]!![authData.uid]!!["tasks"]! as! [String: Bool]
                     if taskCompletion < 100 && checked == false {
-                        taskCompletion += 25
+                        let tasksLength = Double(tasks.count)
+                        taskCompletion += (1.0 / tasksLength) * 100.0
+                        
+                        usersRef.updateChildValues([
+                            "\(authData.uid)/taskCompletion": Int(taskCompletion)
+                        ])
                     }
-                    
-                    usersRef.updateChildValues([
-                        "\(authData.uid)/taskCompletion": taskCompletion
-                    ])
-                    
+
                     //Specific Tasks
                     
                     usersRef.updateChildValues([
@@ -147,13 +149,7 @@ class ActivityViewController: UITableViewController {
                     let picture = snapshot.value["users"]!![authData.uid]!!["tasks"]!!["picture"]! as! Bool
                     let bend = snapshot.value["users"]!![authData.uid]!!["tasks"]!!["bend"]! as! Bool
                     
-                    if (cell.textLabel?.text == "Knowledge Survey" && surveyKnowledgeValue.boolValue == true) {
-                        tableView.cellForRowAtIndexPath(indexPath)!.accessoryType = .Checkmark
-                    } else if (cell.textLabel?.text == "Background Survey" && surveyBackgroundValue.boolValue == true) {
-                        tableView.cellForRowAtIndexPath(indexPath)!.accessoryType = .Checkmark
-                    } else if (cell.textLabel?.text == "Cobb's Curve" && picture.boolValue == true) {
-                        tableView.cellForRowAtIndexPath(indexPath)!.accessoryType = .Checkmark
-                    } else if (cell.textLabel?.text == "Adam's Test" && bend.boolValue == true) {
+                    if ((cell.textLabel?.text == "Knowledge Survey" && surveyKnowledgeValue) || (cell.textLabel?.text == "Background Survey" && surveyBackgroundValue) || (cell.textLabel?.text == "Cobb's Curve" && picture) || (cell.textLabel?.text == "Adam's Test" && bend)) {
                         tableView.cellForRowAtIndexPath(indexPath)!.accessoryType = .Checkmark
                     }
                 }
