@@ -50,12 +50,12 @@ class PieChartDataSource: NSObject, ORKPieChartViewDataSource {
     override init() {
         super.init()
         
-        let myRootRef = Firebase(url:"https://curvatureapp.firebaseio.com")
-        myRootRef.observeEventType(.Value, withBlock: {
+        var myRootRef = FIRDatabase.database().reference()
+        myRootRef.observe(.value, with: {
             snapshot in
-            myRootRef.observeAuthEventWithBlock({ authData in
+            myRootRef?.observeAuthEvent({ authData in
                 if authData != nil {
-                    let condition = snapshot.value["users"]!![authData.uid]!!["taskCompletion"]! as! Float
+                    let condition = snapshot?.value["users"]!![authData.uid]!!["taskCompletion"]! as! Float
                     self.segments[1].value = condition
                 }
             })
@@ -64,19 +64,19 @@ class PieChartDataSource: NSObject, ORKPieChartViewDataSource {
     
     // MARK: ORKPieChartViewDataSource
     
-    func numberOfSegmentsInPieChartView(pieChartView: ORKPieChartView ) -> Int {
+    func numberOfSegments(in pieChartView: ORKPieChartView ) -> Int {
         return segments.count
     }
     
-    func pieChartView(pieChartView: ORKPieChartView, valueForSegmentAtIndex index: Int) -> CGFloat {
+    func pieChartView(_ pieChartView: ORKPieChartView, valueForSegmentAt index: Int) -> CGFloat {
         return CGFloat(segments[index].value)
     }
     
-    func pieChartView(pieChartView: ORKPieChartView, colorForSegmentAtIndex index: Int) -> UIColor {
+    func pieChartView(_ pieChartView: ORKPieChartView, colorForSegmentAt index: Int) -> UIColor {
         return segments[index].color
     }
     
-    func pieChartView(pieChartView: ORKPieChartView, titleForSegmentAtIndex index: Int) -> String {
+    func pieChartView(_ pieChartView: ORKPieChartView, titleForSegmentAt index: Int) -> String {
         return segments[index].title
     }
 }

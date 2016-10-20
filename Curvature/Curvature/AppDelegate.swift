@@ -21,36 +21,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return window?.rootViewController as? ResearchContainerViewController
     }
     
-    func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
-        let standardDefaults = NSUserDefaults.standardUserDefaults()
-        if standardDefaults.objectForKey("ORKSampleFirstRun") == nil {
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        FIRApp.configure()
+        
+        let standardDefaults = UserDefaults.standard
+        if standardDefaults.object(forKey: "ORKSampleFirstRun") == nil {
             ORKPasscodeViewController.removePasscodeFromKeychain()
             standardDefaults.setValue("ORKSampleFirstRun", forKey: "ORKSampleFirstRun")
         }
         
         // Appearance customization
         let pageControlAppearance = UIPageControl.appearance()
-        pageControlAppearance.pageIndicatorTintColor = UIColor.lightGrayColor()
-        pageControlAppearance.currentPageIndicatorTintColor = UIColor.blackColor()
+        pageControlAppearance.pageIndicatorTintColor = UIColor.lightGray
+        pageControlAppearance.currentPageIndicatorTintColor = UIColor.black
         
         // Dependency injection.
         containerViewController?.injectHealthStore(healthStore)
         return true
     }
     
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         lockApp()
         return true
     }
     
-    func applicationWillResignActive(application: UIApplication) {
+    func applicationWillResignActive(_ application: UIApplication) {
         if ORKPasscodeViewController.isPasscodeStoredInKeychain() {
             // Hide content so it doesn't appear in the app switcher.
             containerViewController?.contentHidden = true
         }
     }
     
-    func applicationWillEnterForeground(application: UIApplication) {
+    func applicationWillEnterForeground(_ application: UIApplication) {
         lockApp()
     }
     
@@ -63,36 +66,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window?.makeKeyAndVisible()
         
-        let passcodeViewController = ORKPasscodeViewController.passcodeAuthenticationViewControllerWithText("Welcome back to Curvature.", delegate: self) as! ORKPasscodeViewController
-        containerViewController?.presentViewController(passcodeViewController, animated: false, completion: nil)
+        let passcodeViewController = ORKPasscodeViewController.passcodeAuthenticationViewController(withText: "Welcome back to Curvature.", delegate: self) as! ORKPasscodeViewController
+        containerViewController?.present(passcodeViewController, animated: false, completion: nil)
     }
 }
 
 extension AppDelegate: ORKPasscodeDelegate {
-    func passcodeViewControllerDidFinishWithSuccess(viewController: UIViewController) {
+    func passcodeViewControllerDidFinish(withSuccess viewController: UIViewController) {
         containerViewController?.contentHidden = false
-        viewController.dismissViewControllerAnimated(true, completion: nil)
+        viewController.dismiss(animated: true, completion: nil)
         
-        let ref = Firebase(url: "https://curvatureapp.firebaseio.com")
+        var ref = FIRDatabase.database().reference()
         
         //logout user for now
 //        ref.unauth()
         
-        ref.observeAuthEventWithBlock({ authData in
+        ref.observeSingleEvent({ authData in
             if authData != nil {
                 // user authenticated
                 print(authData)
             } else {
-                self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+                self.window = UIWindow(frame: UIScreen.main.bounds)
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let initialViewController = storyboard.instantiateViewControllerWithIdentifier("accountVC") 
+                let initialViewController = storyboard.instantiateViewController(withIdentifier: "accountVC") 
                 self.window?.rootViewController = initialViewController
                 self.window?.makeKeyAndVisible()
             }
         })
     }
     
-    func passcodeViewControllerDidFailAuthentication(viewController: UIViewController) {
+    func passcodeViewControllerDidFailAuthentication(_ viewController: UIViewController) {
     }
 }
 

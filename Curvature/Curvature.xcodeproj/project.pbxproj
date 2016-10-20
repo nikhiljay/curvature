@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		158A6E596BF41B93B35A3DB5 /* Pods_Curvature.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0324834FB87B7066A4B15B4 /* Pods_Curvature.framework */; };
 		311AEBF71CDF0898000EA996 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311AEBF61CDF0898000EA996 /* RegistrationViewController.swift */; };
 		311AEBF91CDFF4B6000EA996 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311AEBF81CDFF4B6000EA996 /* LoginViewController.swift */; };
+		31241B911DB88BBB00F24EB9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31241B901DB88BBB00F24EB9 /* GoogleService-Info.plist */; };
 		31DF4AB21CD9BED100553E68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DF4AB11CD9BED100553E68 /* AppDelegate.swift */; };
 		31DF4AE51CD9C2A400553E68 /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DF4ACD1CD9C2A400553E68 /* ActivityViewController.swift */; };
 		31DF4AE61CD9C2A400553E68 /* AnimatableChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DF4ACE1CD9C2A400553E68 /* AnimatableChart.swift */; };
@@ -34,12 +36,12 @@
 		31DF4AFB1CD9C2A400553E68 /* StudyTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DF4AE31CD9C2A400553E68 /* StudyTasks.swift */; };
 		31DF4AFC1CD9C2A400553E68 /* WithdrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DF4AE41CD9C2A400553E68 /* WithdrawViewController.swift */; };
 		31DF4B061CD9C55600553E68 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31DF4B051CD9C55600553E68 /* HealthKit.framework */; };
-		6C63F813B9A13C4E7650D768 /* Pods_Curvature.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F99559C9462CB2752B6B4DBB /* Pods_Curvature.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		311AEBF61CDF0898000EA996 /* RegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		311AEBF81CDFF4B6000EA996 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		31241B901DB88BBB00F24EB9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		31DF4AAE1CD9BED100553E68 /* Curvature.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Curvature.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		31DF4AB11CD9BED100553E68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		31DF4ABD1CD9BED100553E68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -68,9 +70,9 @@
 		31DF4AE41CD9C2A400553E68 /* WithdrawViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WithdrawViewController.swift; sourceTree = "<group>"; };
 		31DF4B051CD9C55600553E68 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		31DF4B071CD9C55600553E68 /* Curvature.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Curvature.entitlements; sourceTree = "<group>"; };
-		3FDE092E45BF62A917135C12 /* Pods-Curvature.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Curvature.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Curvature/Pods-Curvature.debug.xcconfig"; sourceTree = "<group>"; };
-		83D4548845039C05E5FB97AD /* Pods-Curvature.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Curvature.release.xcconfig"; path = "Pods/Target Support Files/Pods-Curvature/Pods-Curvature.release.xcconfig"; sourceTree = "<group>"; };
-		F99559C9462CB2752B6B4DBB /* Pods_Curvature.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Curvature.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		32D42B49FD799C0128D43CA3 /* Pods-Curvature.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Curvature.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Curvature/Pods-Curvature.debug.xcconfig"; sourceTree = "<group>"; };
+		AB71E4B89E4E87E0CEDF46F5 /* Pods-Curvature.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Curvature.release.xcconfig"; path = "Pods/Target Support Files/Pods-Curvature/Pods-Curvature.release.xcconfig"; sourceTree = "<group>"; };
+		E0324834FB87B7066A4B15B4 /* Pods_Curvature.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Curvature.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,8 +80,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6C63F813B9A13C4E7650D768 /* Pods_Curvature.framework in Frameworks */,
 				31DF4B061CD9C55600553E68 /* HealthKit.framework in Frameworks */,
+				158A6E596BF41B93B35A3DB5 /* Pods_Curvature.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,8 +102,8 @@
 			children = (
 				31DF4AB01CD9BED100553E68 /* Curvature */,
 				31DF4AAF1CD9BED100553E68 /* Products */,
-				F3865D30E460BF3F631F7B62 /* Pods */,
 				DF300ED9DADCFD2436D8B6C0 /* Frameworks */,
+				64B150BD335DC270523DC16E /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -204,6 +206,7 @@
 		31DF4B041CD9C37E00553E68 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				31241B901DB88BBB00F24EB9 /* GoogleService-Info.plist */,
 				31DF4ACF1CD9C2A400553E68 /* Assets.xcassets */,
 				31DF4ABD1CD9BED100553E68 /* Info.plist */,
 				31DF4B071CD9C55600553E68 /* Curvature.entitlements */,
@@ -211,22 +214,22 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		64B150BD335DC270523DC16E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				32D42B49FD799C0128D43CA3 /* Pods-Curvature.debug.xcconfig */,
+				AB71E4B89E4E87E0CEDF46F5 /* Pods-Curvature.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		DF300ED9DADCFD2436D8B6C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				31DF4B051CD9C55600553E68 /* HealthKit.framework */,
-				F99559C9462CB2752B6B4DBB /* Pods_Curvature.framework */,
+				E0324834FB87B7066A4B15B4 /* Pods_Curvature.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		F3865D30E460BF3F631F7B62 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				3FDE092E45BF62A917135C12 /* Pods-Curvature.debug.xcconfig */,
-				83D4548845039C05E5FB97AD /* Pods-Curvature.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -236,12 +239,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 31DF4AC01CD9BED100553E68 /* Build configuration list for PBXNativeTarget "Curvature" */;
 			buildPhases = (
-				63B44A8C44F8F62426EA2EA6 /* Check Pods Manifest.lock */,
+				6F3C5290BC2D581F13275076 /* [CP] Check Pods Manifest.lock */,
 				31DF4AAA1CD9BED100553E68 /* Sources */,
 				31DF4AAB1CD9BED100553E68 /* Frameworks */,
 				31DF4AAC1CD9BED100553E68 /* Resources */,
-				B44F495EC0D0570B2A65A24D /* Embed Pods Frameworks */,
-				ADD86297C06C02F7917A8E2C /* Copy Pods Resources */,
+				1956FAF99EBB8E05AADF2A08 /* [CP] Embed Pods Frameworks */,
+				8AA5E60F8A9DC3D6F02401CB /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -265,8 +268,12 @@
 					31DF4AAD1CD9BED100553E68 = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = 32FG3U99MG;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.HealthKit = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
 								enabled = 1;
 							};
 						};
@@ -297,6 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				31DF4AE91CD9C2A400553E68 /* Main.storyboard in Resources */,
+				31241B911DB88BBB00F24EB9 /* GoogleService-Info.plist in Resources */,
 				31DF4AE71CD9C2A400553E68 /* Assets.xcassets in Resources */,
 				31DF4AE81CD9C2A400553E68 /* LaunchScreen.storyboard in Resources */,
 			);
@@ -305,49 +313,49 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		63B44A8C44F8F62426EA2EA6 /* Check Pods Manifest.lock */ = {
+		1956FAF99EBB8E05AADF2A08 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		ADD86297C06C02F7917A8E2C /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Curvature/Pods-Curvature-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B44F495EC0D0570B2A65A24D /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Curvature/Pods-Curvature-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6F3C5290BC2D581F13275076 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8AA5E60F8A9DC3D6F02401CB /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Curvature/Pods-Curvature-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -471,7 +479,7 @@
 		};
 		31DF4AC11CD9BED100553E68 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3FDE092E45BF62A917135C12 /* Pods-Curvature.debug.xcconfig */;
+			baseConfigurationReference = 32D42B49FD799C0128D43CA3 /* Pods-Curvature.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Curvature/Curvature.entitlements;
@@ -480,12 +488,13 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nikhil.Curvature;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		31DF4AC21CD9BED100553E68 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 83D4548845039C05E5FB97AD /* Pods-Curvature.release.xcconfig */;
+			baseConfigurationReference = AB71E4B89E4E87E0CEDF46F5 /* Pods-Curvature.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Curvature/Curvature.entitlements;
@@ -494,6 +503,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nikhil.Curvature;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

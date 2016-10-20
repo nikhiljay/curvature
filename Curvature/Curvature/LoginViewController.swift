@@ -20,14 +20,24 @@ class LoginViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    @IBAction func loginButtonPressed(sender: AnyObject) {
-        let ref = Firebase(url: "https://curvatureapp.firebaseio.com")
-        ref.authUser(self.emailTextField.text, password: self.passwordTextField.text, withCompletionBlock: { error, authData in
+    @IBAction func loginButtonPressed(_ sender: AnyObject) {
+        var ref = FIRDatabase.database().reference()
+//        ref.authUser(self.emailTextField.text, password: self.passwordTextField.text, withCompletionBlock: { error, authData in
+//            if error != nil {
+//                print(error)
+//            } else {
+//                self.performSegue(withIdentifier: "loggedIn", sender: self)
+//            }
+//        })
+        
+        FIRAuth.auth()!.signIn(withEmail: self.emailTextField.text!, password: self.passwordTextField.text!, completion: { error, authData in
+            
             if error != nil {
                 print(error)
             } else {
-                self.performSegueWithIdentifier("loggedIn", sender: self)
+                self.performSegue(withIdentifier: "loggedIn", sender: self)
             }
         })
+
     }
 }

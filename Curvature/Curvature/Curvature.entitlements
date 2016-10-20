@@ -4,5 +4,10 @@
 <dict>
 	<key>com.apple.developer.healthkit</key>
 	<true/>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>$(AppIdentifierPrefix)nikhil.Curvature</string>
+		<string>$(AppIdentifierPrefix)rw.firebase.gettingstarted</string>
+	</array>
 </dict>
 </plist>

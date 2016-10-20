@@ -3,6 +3,8 @@ use_frameworks!
 
 target 'Curvature' do
 	pod 'ResearchKit', '~> 1.0'
-	pod 'Firebase', '>= 2.5.1'
+	pod 'Firebase/Core'
+	pod 'Firebase/Database'
+	pod 'Firebase/Auth'
 end
 

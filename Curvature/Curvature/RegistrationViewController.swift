@@ -21,20 +21,20 @@ class RegistrationViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-    @IBAction func createButtonPressed(sender: AnyObject) {
-        let ref = Firebase(url: "https://curvatureapp.firebaseio.com")
+    @IBAction func createButtonPressed(_ sender: AnyObject) {
+        var ref = FIRDatabase.database().reference()
         ref.createUser(emailTextField.text, password: passwordTextField.text, withValueCompletionBlock: { error, result in
             if error != nil {
                 print(error)
             } else {
-                let uid = result["uid"] as? String
+                let uid = result?["uid"] as? String
                 print("Successfully created user account with uid: \(uid!)")
                 
-                ref.authUser(self.emailTextField.text, password: self.passwordTextField.text, withCompletionBlock: { error, authData in
+                ref?.authUser(self.emailTextField.text, password: self.passwordTextField.text, withCompletionBlock: { error, authData in
                     if error != nil {
                         print(error)
                     } else {
-                        self.performSegueWithIdentifier("accountCreated", sender: self)
+                        self.performSegue(withIdentifier: "accountCreated", sender: self)
                         
                         let newUser = [
                             "name" : self.nameTextField.text as AnyObject!,
@@ -48,7 +48,7 @@ class RegistrationViewController: UIViewController {
                             ] as AnyObject!
                         ]
 
-                        ref.childByAppendingPath("users").childByAppendingPath(authData.uid).setValue(newUser)
+                        ref?.child(byAppendingPath: "users").child(byAppendingPath: authData?.uid).setValue(newUser)
                     }
                 })
             }

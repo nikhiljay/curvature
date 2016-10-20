@@ -31,6 +31,26 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import UIKit
 import ResearchKit
 import Firebase
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class DashboardTableViewController: UITableViewController, ORKPieChartViewDataSource {
     // MARK: Properties
@@ -71,24 +91,24 @@ class DashboardTableViewController: UITableViewController, ORKPieChartViewDataSo
         tableView.rowHeight = UITableViewAutomaticDimension
     }
     
-    func refresh(sender: AnyObject) {
+    func refresh(_ sender: AnyObject) {
         loadData { (percentage) in
             self.activityCompletionPercentage = percentage
         }
     }
     
-    func loadData(completionHandler: (percentage: CGFloat) -> ()) {
-        let myRootRef = Firebase(url:"https://curvatureapp.firebaseio.com")
-        myRootRef.observeEventType(.Value, withBlock: {
+    func loadData(_ completionHandler: @escaping (_ percentage: CGFloat) -> ()) {
+        var myRootRef = FIRDatabase.database().reference()
+        myRootRef.observe(.value, with: {
             snapshot in
-            myRootRef.observeAuthEventWithBlock({ authData in
+            myRootRef.observeSingleEvent({ authData in
                 if authData != nil {
                     // user authenticated
-                    let condition = snapshot.value["users"]!![authData.uid]!!["condition"]!
+                    let condition = snapshot?.value["users"]!![authData.uid]!!["condition"]!
                     self.conditionLabel.text = condition as? String
                     self.healthActivityIndicator.stopAnimating()
                     
-                    var taskCompletion = snapshot.value["users"]!![authData.uid]!!["taskCompletion"]! as! CGFloat!
+                    var taskCompletion = snapshot?.value["users"]!![authData.uid]!!["taskCompletion"]! as! CGFloat!
                     if (taskCompletion < 1) {
                         taskCompletion = 1
                     } else if (taskCompletion > 99) {
@@ -109,7 +129,7 @@ class DashboardTableViewController: UITableViewController, ORKPieChartViewDataSo
         }
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Animate any visible charts
@@ -118,7 +138,7 @@ class DashboardTableViewController: UITableViewController, ORKPieChartViewDataSo
     
     // MARK: PieView
     
-    func numberOfSegmentsInPieChartView(pieChartView: ORKPieChartView) -> Int {
+    func numberOfSegments(in pieChartView: ORKPieChartView) -> Int {
         if activityCompletionPercentage > 0 {
             return 2
         } else {
@@ -127,41 +147,41 @@ class DashboardTableViewController: UITableViewController, ORKPieChartViewDataSo
     }
     
     enum PieChartSegment: Int {
-        case Completed, Remaining
+        case completed, remaining
     }
     
     var activityCompletionPercentage: CGFloat = 1
     
-    func pieChartView(pieChartView: ORKPieChartView, valueForSegmentAtIndex index: Int) -> CGFloat {
+    func pieChartView(_ pieChartView: ORKPieChartView, valueForSegmentAt index: Int) -> CGFloat {
         switch PieChartSegment(rawValue: index)! {
-        case .Completed:
+        case .completed:
             return activityCompletionPercentage
-        case .Remaining:
+        case .remaining:
             return 100 - activityCompletionPercentage
         }
     }
     
-    func pieChartView(pieChartView: ORKPieChartView, colorForSegmentAtIndex index: Int) -> UIColor {
+    func pieChartView(_ pieChartView: ORKPieChartView, colorForSegmentAt index: Int) -> UIColor {
         switch PieChartSegment(rawValue: index)! {
-        case .Completed:
+        case .completed:
             return UIColor(red: 101/225, green: 201/255, blue: 122/225, alpha: 1)
-        case .Remaining:
+        case .remaining:
             return UIColor(red: 246/255, green: 246/255, blue: 246/255, alpha: 1)
         }
     }
     
-    func pieChartView(pieChartView: ORKPieChartView, titleForSegmentAtIndex index: Int) -> String {
+    func pieChartView(_ pieChartView: ORKPieChartView, titleForSegmentAt index: Int) -> String {
         switch PieChartSegment(rawValue: index)! {
-        case .Completed:
+        case .completed:
             return NSLocalizedString("Completed", comment: "")
-        case .Remaining:
+        case .remaining:
             return NSLocalizedString("Remaining", comment: "")
         }
     }
     
     // MARK: UITableViewDelegate
     
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         // Animate charts as they're scrolled into view.
         if let animatableChart = animatableChartInCell(cell) {
             animatableChart.animateWithDuration(0.5)
@@ -170,9 +190,9 @@ class DashboardTableViewController: UITableViewController, ORKPieChartViewDataSo
     
     // MARK: Convenience
     
-    func animatableChartInCell(cell: UITableViewCell) -> AnimatableChart? {
+    func animatableChartInCell(_ cell: UITableViewCell) -> AnimatableChart? {
         for chart in allCharts {
-            guard let animatableChart = chart as? AnimatableChart where chart.isDescendantOfView(cell) else { continue }
+            guard let animatableChart = chart as? AnimatableChart , chart.isDescendant(of: cell) else { continue }
             return animatableChart
         }
         

@@ -34,35 +34,35 @@ import CoreMotion
 import Firebase
 
 enum Activity: Int {
-    case KnowledgeSurvey, BackgroundSurvey, Picture, Tilt
+    case knowledgeSurvey, backgroundSurvey, picture, tilt
     
     static var allValues: [Activity] {
         var idx = 0
-        return Array(AnyGenerator{ return self.init(rawValue: idx++)})
+        return Array(AnyIterator{ return self.init(rawValue: idx++)})
     }
     
     var title: String {
         switch self {
-        case .KnowledgeSurvey:
+        case .knowledgeSurvey:
             return "Knowledge Survey"
-        case .BackgroundSurvey:
+        case .backgroundSurvey:
             return "Background Survey"
-        case .Picture:
+        case .picture:
             return "Cobb's Curve"
-        case .Tilt:
+        case .tilt:
             return "Adam's Test"
         }
     }
     
     var subtitle: String {
         switch self {
-        case .KnowledgeSurvey:
+        case .knowledgeSurvey:
             return "Answer 6 short questions about your knowledge of scoliosis"
-        case .BackgroundSurvey:
+        case .backgroundSurvey:
             return "Answer 6 short questions about your background of scoliosis"
-        case .Picture:
+        case .picture:
             return "Take a picture to identify abnormalities of your spinal curve"
-        case .Tilt:
+        case .tilt:
             return "Measure asymmetry of your back"
         }
     }
@@ -72,25 +72,44 @@ var specificTask: String!
 var checked: Bool = false
 
 extension ActivityViewController : ORKTaskViewControllerDelegate {
+    /**
+     Tells the delegate that the task has finished.
+     
+     The task view controller calls this method when an unrecoverable error occurs,
+     when the user has canceled the task (with or without saving), or when the user
+     completes the last step in the task.
+     
+     In most circumstances, the receiver should dismiss the task view controller
+     in response to this method, and may also need to collect and process the results
+     of the task.
+     
+     @param taskViewController  The `ORKTaskViewController `instance that is returning the result.
+     @param reason              An `ORKTaskViewControllerFinishReason` value indicating how the user chose to complete the task.
+     @param error               If failure occurred, an `NSError` object indicating the reason for the failure. The value of this parameter is `nil` if `result` does not indicate failure.
+     */
+    public func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
+        <#code#>
+    }
+
     
-    func taskViewController(taskViewController: ORKTaskViewController, stepViewControllerWillAppear stepViewController: ORKStepViewController) {
+    func taskViewController(_ taskViewController: ORKTaskViewController, stepViewControllerWillAppear stepViewController: ORKStepViewController) {
         // Example data processing for the wait step.
     }
     
-    func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
+    func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: NSError?) {
         // Handle results using taskViewController.result
         
-        let myRootRef = Firebase(url:"https://curvatureapp.firebaseio.com")
-        myRootRef.observeSingleEventOfType(.Value, withBlock: {
+        var myRootRef = FIRDatabase.database().reference()
+        myRootRef.observeSingleEvent(of: .value, with: {
             snapshot in
-            myRootRef.observeAuthEventWithBlock({ authData in
+            myRootRef.observeAuthEvent({ authData in
                 if authData != nil {
                     
-                    let usersRef = myRootRef.childByAppendingPath("users")
+                    let usersRef = myRootRef?.child(byAppendingPath: "users")
                     
                     //Task Completion
-                    var taskCompletion = snapshot.value["users"]!![authData.uid]!!["taskCompletion"]! as! Double
-                    let tasks = snapshot.value["users"]!![authData.uid]!!["tasks"]! as! [String: Bool]
+                    var taskCompletion = snapshot?.value["users"]!![authData.uid]!!["taskCompletion"]! as! Double
+                    let tasks = snapshot?.value["users"]!![authData.uid]!!["tasks"]! as! [String: Bool]
                     if taskCompletion < 100 && checked == false {
                         let tasksLength = Double(tasks.count)
                         taskCompletion += (1.0 / tasksLength) * 100.0
@@ -102,11 +121,11 @@ extension ActivityViewController : ORKTaskViewControllerDelegate {
 
                     //Specific Tasks
                     
-                    usersRef.updateChildValues([
-                        "\(authData.uid)/tasks/\(specificTask)": true
+                    usersRef?.updateChildValues([
+                        "\(authData?.uid)/tasks/\(specificTask)": true
                     ])
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         self.tableView.reloadData()
                     })
                     
@@ -116,7 +135,7 @@ extension ActivityViewController : ORKTaskViewControllerDelegate {
         })
 
         motionManager.stopGyroUpdates()
-        taskViewController.dismissViewControllerAnimated(true, completion: nil)
+        taskViewController.dismiss(animated: true, completion: nil)
     }
 }
 
@@ -125,32 +144,32 @@ class ActivityViewController: UITableViewController {
     
     var motionManager = CMMotionManager()
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard section == 0 else { return 0 }
         
         return Activity.allValues.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("activityCell", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "activityCell", for: indexPath)
         
-        if let activity = Activity(rawValue: indexPath.row) {
+        if let activity = Activity(rawValue: (indexPath as NSIndexPath).row) {
             cell.textLabel?.text = activity.title
             cell.detailTextLabel?.text = activity.subtitle
         }
         
-        let myRootRef = Firebase(url:"https://curvatureapp.firebaseio.com")
-        myRootRef.observeSingleEventOfType(.Value, withBlock: {
+        var myRootRef = FIRDatabase.database().reference()
+        myRootRef.observeSingleEvent(of: .value, with: {
             snapshot in
-            myRootRef.observeAuthEventWithBlock({ authData in
+            myRootRef.observeAuthEvent({ authData in
                 if authData != nil {
-                    let surveyKnowledgeValue = snapshot.value["users"]!![authData.uid]!!["tasks"]!!["surveyKnowledge"]! as! Bool
-                    let surveyBackgroundValue = snapshot.value["users"]!![authData.uid]!!["tasks"]!!["surveyBackground"]! as! Bool
-                    let picture = snapshot.value["users"]!![authData.uid]!!["tasks"]!!["picture"]! as! Bool
-                    let bend = snapshot.value["users"]!![authData.uid]!!["tasks"]!!["bend"]! as! Bool
+                    let surveyKnowledgeValue = snapshot?.value["users"]!![authData.uid]!!["tasks"]!!["surveyKnowledge"]! as! Bool
+                    let surveyBackgroundValue = snapshot?.value["users"]!![authData.uid]!!["tasks"]!!["surveyBackground"]! as! Bool
+                    let picture = snapshot?.value["users"]!![authData.uid]!!["tasks"]!!["picture"]! as! Bool
+                    let bend = snapshot?.value["users"]!![authData.uid]!!["tasks"]!!["bend"]! as! Bool
                     
                     if ((cell.textLabel?.text == "Knowledge Survey" && surveyKnowledgeValue) || (cell.textLabel?.text == "Background Survey" && surveyBackgroundValue) || (cell.textLabel?.text == "Cobb's Curve" && picture) || (cell.textLabel?.text == "Adam's Test" && bend)) {
-                        tableView.cellForRowAtIndexPath(indexPath)!.accessoryType = .Checkmark
+                        tableView.cellForRow(at: indexPath)!.accessoryType = .checkmark
                     }
                 }
             })
@@ -161,35 +180,35 @@ class ActivityViewController: UITableViewController {
     
     // MARK: UITableViewDelegate
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        guard let activity = Activity(rawValue: indexPath.row) else { return }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let activity = Activity(rawValue: (indexPath as NSIndexPath).row) else { return }
         
         let taskViewController: ORKTaskViewController
         switch activity {
-        case .KnowledgeSurvey:
-            taskViewController = ORKTaskViewController(task: StudyTasks.KnowledgeSurveyTask, taskRunUUID: NSUUID())
+        case .knowledgeSurvey:
+            taskViewController = ORKTaskViewController(task: StudyTasks.KnowledgeSurveyTask, taskRun: UUID())
             specificTask = "surveyKnowledge"
-            if (tableView.cellForRowAtIndexPath(indexPath)!.accessoryType == .Checkmark) { checked = true }
+            if (tableView.cellForRow(at: indexPath)!.accessoryType == .checkmark) { checked = true }
             
-        case .BackgroundSurvey:
-            taskViewController = ORKTaskViewController(task: StudyTasks.BackgroundSurveyTask, taskRunUUID: NSUUID())
+        case .backgroundSurvey:
+            taskViewController = ORKTaskViewController(task: StudyTasks.BackgroundSurveyTask, taskRun: UUID())
             specificTask = "surveyBackground"
-            if (tableView.cellForRowAtIndexPath(indexPath)!.accessoryType == .Checkmark) { checked = true }
+            if (tableView.cellForRow(at: indexPath)!.accessoryType == .checkmark) { checked = true }
             
-        case .Picture:
-            taskViewController = ORKTaskViewController(task: StudyTasks.pictureTask, taskRunUUID: NSUUID())
+        case .picture:
+            taskViewController = ORKTaskViewController(task: StudyTasks.pictureTask, taskRun: UUID())
             specificTask = "picture"
-            if (tableView.cellForRowAtIndexPath(indexPath)!.accessoryType == .Checkmark) { checked = true }
+            if (tableView.cellForRow(at: indexPath)!.accessoryType == .checkmark) { checked = true }
             
-        case .Tilt:
-            taskViewController = ORKTaskViewController(task: StudyTasks.tiltTask, taskRunUUID: NSUUID())
+        case .tilt:
+            taskViewController = ORKTaskViewController(task: StudyTasks.tiltTask, taskRun: UUID())
             specificTask = "bend"
-            if (tableView.cellForRowAtIndexPath(indexPath)!.accessoryType == .Checkmark) { checked = true }
-            if motionManager.gyroAvailable {
+            if (tableView.cellForRow(at: indexPath)!.accessoryType == .checkmark) { checked = true }
+            if motionManager.isGyroAvailable {
                 var values: [String] = []
                 
                 motionManager.gyroUpdateInterval = 1.0
-                motionManager.startGyroUpdatesToQueue(NSOperationQueue.mainQueue(), withHandler: { (gyroData, NSError) -> Void in
+                motionManager.startGyroUpdates(to: OperationQueue.main, withHandler: { (gyroData, NSError) -> Void in
                     var degrees = (gyroData?.rotationRate.y)! * 180 / M_PI
                     var yTotal: Double = 0.0
                     degrees -= 0.4
@@ -205,9 +224,9 @@ class ActivityViewController: UITableViewController {
             }
         }
         
-        taskViewController.outputDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+        taskViewController.outputDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         taskViewController.delegate = self
         
-        navigationController?.presentViewController(taskViewController, animated: true, completion: nil)
+        navigationController?.present(taskViewController, animated: true, completion: nil)
     }
 }

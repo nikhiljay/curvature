@@ -35,7 +35,7 @@ import Firebase
 class OnboardingViewController: UIViewController {
     // MARK: IB actions
     
-    @IBAction func joinButtonTapped(sender: UIButton) {
+    @IBAction func joinButtonTapped(_ sender: UIButton) {
         let consentDocument = ConsentDocument()
         let consentStep = ORKVisualConsentStep(identifier: "VisualConsentStep", document: consentDocument)
         
@@ -43,7 +43,7 @@ class OnboardingViewController: UIViewController {
         
         let signature = consentDocument.signatures!.first!
         
-        let reviewConsentStep = ORKConsentReviewStep(identifier: "ConsentReviewStep", signature: signature, inDocument: consentDocument)
+        let reviewConsentStep = ORKConsentReviewStep(identifier: "ConsentReviewStep", signature: signature, in: consentDocument)
         
         reviewConsentStep.text = "Review the consent form."
         reviewConsentStep.reasonForConsent = "Consent to join the Scoliosis Research Study."
@@ -56,26 +56,45 @@ class OnboardingViewController: UIViewController {
         completionStep.text = "Thank you for joining this study."
         
         let orderedTask = ORKOrderedTask(identifier: "Join", steps: [consentStep, reviewConsentStep, healthDataStep, passcodeStep, completionStep])
-        let taskViewController = ORKTaskViewController(task: orderedTask, taskRunUUID: nil)
+        let taskViewController = ORKTaskViewController(task: orderedTask, taskRun: nil)
         taskViewController.delegate = self
         
-        presentViewController(taskViewController, animated: true, completion: nil)
+        present(taskViewController, animated: true, completion: nil)
     }
 }
 
 extension OnboardingViewController : ORKTaskViewControllerDelegate {
+    /**
+     Tells the delegate that the task has finished.
+     
+     The task view controller calls this method when an unrecoverable error occurs,
+     when the user has canceled the task (with or without saving), or when the user
+     completes the last step in the task.
+     
+     In most circumstances, the receiver should dismiss the task view controller
+     in response to this method, and may also need to collect and process the results
+     of the task.
+     
+     @param taskViewController  The `ORKTaskViewController `instance that is returning the result.
+     @param reason              An `ORKTaskViewControllerFinishReason` value indicating how the user chose to complete the task.
+     @param error               If failure occurred, an `NSError` object indicating the reason for the failure. The value of this parameter is `nil` if `result` does not indicate failure.
+     */
+    public func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
+        <#code#>
+    }
+
     
-    func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
+    func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: NSError?) {
         switch reason {
-            case .Completed:
-                performSegueWithIdentifier("unwindToStudy", sender: nil)
+            case .completed:
+                performSegue(withIdentifier: "unwindToStudy", sender: nil)
             
-            case .Discarded, .Failed, .Saved:
-                dismissViewControllerAnimated(true, completion: nil)
+            case .discarded, .failed, .saved:
+                dismiss(animated: true, completion: nil)
         }
     }
     
-    func taskViewController(taskViewController: ORKTaskViewController, viewControllerForStep step: ORKStep) -> ORKStepViewController? {
+    func taskViewController(_ taskViewController: ORKTaskViewController, viewControllerFor step: ORKStep) -> ORKStepViewController? {
         if step is HealthDataStep {
             let healthStepViewController = HealthDataStepViewController(step: step)
             return healthStepViewController
